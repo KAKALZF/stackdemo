@@ -1,0 +1,11 @@
+server:
+  port : 8086
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8720
+      eager: true
+  application:
+    name: ample16
