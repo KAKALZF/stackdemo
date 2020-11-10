@@ -15,28 +15,23 @@
  */
 package com.ample16.stackdemo.config;
 
-import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
+import net.javacrumbs.shedlock.core.LockProvider;
+import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.io.PrintWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 /**
  * @author Eric Zhao
  */
 @Configuration
-public class SentinelWebConfig {
-
+@EnableSchedulerLock(defaultLockAtMostFor = "10m")
+public class ServiceConfig {
     @Bean
-    public BlockExceptionHandler sentinelBlockExceptionHandler() {
-        return (request, response, e) -> {
-            // 429 Too Many Requests
-            response.setStatus(429);
-
-            PrintWriter out = response.getWriter();
-            out.print("Oops, blocked by Sentinel: " + e.getClass().getSimpleName());
-            out.flush();
-            out.close();
-        };
+    public LockProvider lockProvider(RedisConnectionFactory connectionFactory) {
+        return new RedisLockProvider(connectionFactory);
     }
+
+
 }
