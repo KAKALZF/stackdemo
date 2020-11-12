@@ -23,12 +23,22 @@ public class Schedule {
      * 每月1号6点清除上月记录
      */
     @Scheduled(cron = "0/10 * 16 * * ?")
-//    @SchedulerLock(name = "basicJob", lockAtMostFor = "1m", lockAtLeastFor = "1m")
-    @SchedulerLock(name = "basicJob1")
+    @SchedulerLock(name = "basicJob", lockAtMostFor = "1m", lockAtLeastFor = "1m")
     public void deleteLastMonthCache() {
         try {
             LockAssert.assertLocked();
-            logger.info("alert=====job===");
+            logger.info("alert=====job1===");
+        } catch (Exception e) {
+            logger.error("告警定时任务执行异常", e);
+        }
+    }
+
+    @Scheduled(cron = "0/5 * 16 * * ?")
+    @SchedulerLock(name = "basicJob2", lockAtMostFor = "1m", lockAtLeastFor = "1m")
+    public void deleteLastMonthCache2() {
+        try {
+            LockAssert.assertLocked();
+            logger.info("alert=====job2===");
         } catch (Exception e) {
             logger.error("告警定时任务执行异常", e);
         }
