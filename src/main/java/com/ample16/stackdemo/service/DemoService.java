@@ -16,6 +16,7 @@
 package com.ample16.stackdemo.service;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,8 @@ public class DemoService {
     @SentinelResource(value = "DemoService#bonjour", defaultFallback = "bonjourFallback")
     public String bonjour(String name) {
         try {
-            Thread.sleep(1000);
+
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

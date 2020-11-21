@@ -1,6 +1,7 @@
 package com.ample16.stackdemo.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
 import com.ample16.stackdemo.service.DemoService;
@@ -20,6 +21,7 @@ public class TestController {
 
     @GetMapping("/kaka")
     public String test(@RequestParam("name") String name) {
+        ContextUtil.enter("DemoService#bonjour","{node1}");
         return demoService.bonjour(name);
     }
 
