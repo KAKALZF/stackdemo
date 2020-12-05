@@ -24,7 +24,7 @@ public class SendMessageController {
 
     @GetMapping("/sendDirectMessage")
     public String sendDirectMessage() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1000; i++) {
             String messageId = String.valueOf(UUID.randomUUID());
 //        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             Map<String, Object> map = new HashMap<>();

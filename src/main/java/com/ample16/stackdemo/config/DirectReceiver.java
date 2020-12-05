@@ -6,6 +6,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
 import java.util.Random;
@@ -25,18 +27,19 @@ public class DirectReceiver {
     @RabbitHandler
     @RabbitListener(queues = "normalQueue")//监听的死信队列名称 normalQueue
     public void normalQueueComsumer(Map testMessage) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //        System.out.println("normalQueue消费者收到消息  : " + testMessage.toString() + new Date());
         if (isNotifySuccess()) {
-            System.out.println("normalQueue|suc|" + testMessage.toString() + "|" + new Date());
+            System.out.println("normalQueue|suc|" + testMessage.toString() + "|" + LocalDateTime.now().format(formatter));
         } else {
-            System.out.println("normalQueue|fail|" + testMessage.toString() + "|" + new Date());
+            System.out.println("normalQueue|fail|" + testMessage.toString() + "|" + LocalDateTime.now().format(formatter));
             Integer count = (Integer) testMessage.get("count");
             if (count < 3) {
                 //消费失败且未超过重试次数,重新发送到交换机processFailExchange
                 testMessage.put("count", count + 1);
                 rabbitTemplate.convertAndSend("processFailExchange", "processFailRouting", testMessage);
             } else {
-                System.out.println("超过重复次数,放弃消息:" + testMessage.toString() + "|" + new Date());
+                System.out.println("超过重复次数,放弃消息:" + testMessage.toString() + "|" + LocalDateTime.now().format(formatter));
             }
         }
     }
@@ -54,8 +57,8 @@ public class DirectReceiver {
      * @return
      */
     public Boolean isNotifySuccess() {
-//        int i = new Random().nextInt(10);
-//        return i % 2 == 0 ? true : false;
-        return false;
+        int i = new Random().nextInt(10);
+        return i % 2 == 0 ? true : false;
+//        return false;
     }
 }
