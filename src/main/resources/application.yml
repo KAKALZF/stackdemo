@@ -3,9 +3,3 @@ server:
 spring:
   application:
     name: ample16
-  #配置rabbitMq 服务器
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: root
-    password: admin
