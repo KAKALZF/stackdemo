@@ -6,20 +6,20 @@
         <my-component2></my-component2>
     </div>
 
+
 </template>
 
 <script>
-    // 这样引入如果该组件被html文件通过httpVueloader引入会有问题,解析不了
-    // import myComponent2 from './my-component2'
-    let myComponent2 = httpVueLoader('./my-component2.vue');
-    module.exports = {
-        data: function () {
+    import myComponent2 from './my-component2.vue';
+
+    export default {
+        data() {
             return {
-                who: 'component'
+                who: 'world2'
             }
         },
         components: {
-            "my-component2": myComponent2
+            'my-component2': myComponent2
         }
     }
 </script>
