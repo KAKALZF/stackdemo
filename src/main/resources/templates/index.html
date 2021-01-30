@@ -5,66 +5,82 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="/js/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/js/bootstrap.min.js"></script>
+
     <title>Document</title>
+    <script>
+        $(function () {
+            $("#myBtn").click(function () {
+                console.log("====myBtn====");
+                // $(this).hide();
+                $.ajax({
+                    type: "POST",
+                    url: "/actuator/health",
+                    data: "name=John&location=Boston",
+                    success: function (msg) {
+                        console.log(msg);
+                        alert("Data Saved: " + msg);
+                        console.log($("#firstname").val());
+                        console.log($("#lastname").val());
+                    }
+                });
+            });
+
+        });
+    </script>
 </head>
 <body>
-<!--字符串输出-->
-<p th:text="'hello SpringBoot'">hello thymeleaf</p>
-<!--数学运算-->
-<p th:text="9 + 10"></p>
-<p th:text="10 * 10"></p>
-<p th:text="1 - 10"></p>
-<p th:text="8 / 3"></p>
-<p th:text="3 % 2"></p>
-<!--操作域对象-->
-<p th:text="${user}"></p>
-<p th:text="${user.username}"></p>
-
-<!--遍历数组-->
-<table th:each="item, sta:${user.hobbies}">
+<table class="table table-striped">
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <label for="firstname" class="col-sm-1 control-label">名字</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastname" class="col-sm-1 control-label">姓</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+            </div>
+        </div>
+        <!--        <button  id="myBtn" type="submit" class="btn btn-default">提交</button>-->
+    </form>
+    <button id="myBtn" class="btn btn-default">提交</button>
+    <caption>条纹表格布局</caption>
+    <thead>
     <tr>
-        <td th:text="${item}"></td>
-        <td th:text="${sta.index}"></td>
-        <td th:text="${sta.odd}"></td>
-        <td th:text="${sta.size}"></td>
+        <th>名称</th>
+        <th>城市</th>
+        <th>邮编</th>
     </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Tanmay</td>
+        <td>Bangalore</td>
+        <td>560001</td>
+    </tr>
+    <tr>
+        <td>Sachin</td>
+        <td>Mumbai</td>
+        <td>400003</td>
+    </tr>
+    <tr>
+        <td>Uma</td>
+        <td>Pune</td>
+        <td>411027</td>
+    </tr>
+    </tbody>
 </table>
 
-
-<!--遍历map-->
-<div th:each="item:${user.secrets}" th:text="${item.key}"></div>
-
-<!--遍历数组-->
-<div th:each="item:${user.hobbies}" th:text="${item}"></div>
-
-<!--设置属性-->
-<input type="text" th:attr="value=${user.username}">
-<input type="text" th:attr="value=${user.username}, title=${user.username}">
-
-<!--表单数据绑定-->
-<form action="" th:object="${user}">
-    <input type="text" th:value="*{username}">
-    <input type="password" th:value="*{password}">
-    <select>
-        <option th:each="item:${user.secrets}" th:text="${item.value}" th:selected="'a' eq ${item.value}"></option>
-    </select>
-</form>
-
-<!--解析html文本内容-->
-<p th:utext="'<span>html</span>'"></p>
-
-<!--流程控制-->
-<p th:if="${user.username} != ${user.password}">yes</p>
-<div th:switch="${user.username}">
-    <p th:case="rose">name is rose</p>
-    <p th:case="jack">name is jack</p>
-</div>
-
-<!--外部引入-->
-<link rel="stylesheet" th:href="@{/css/index.css}">
-<script th:src="@{/js/index.js}"></script>
-
-<a th:href="@{/home}">home</a>
 </body>
 
 </html>
