@@ -15,7 +15,7 @@ public class TestController {
 
     @GetMapping("/kaka")
     public String test(@RequestParam("name") String name) {
-        return "";
+        return "hello world" + name;
     }
 
 }

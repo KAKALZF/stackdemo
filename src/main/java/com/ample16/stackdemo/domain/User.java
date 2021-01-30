@@ -9,6 +9,7 @@ import java.util.Map;
 public class User {
     String username;
     String password;
+    String country;
     List<String> hobbies;
     Map<String, String> secrets;
 
