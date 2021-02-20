@@ -8,6 +8,7 @@ import java.util.Map;
 @Data
 public class User {
     String username;
+    String name;
     String password;
     String country;
     List<String> hobbies;

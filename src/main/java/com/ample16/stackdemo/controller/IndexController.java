@@ -17,28 +17,26 @@ public class IndexController {
 
     @GetMapping("home")
     public String index(String page, Model model) {
-
         List userList = new ArrayList<User>();
-        User user = new User();
-        user.setUsername("jack");
-        user.setPassword("112233");
-        user.setHobbies(Arrays.asList(new String[]{"singing", "dancing", "football"}));
-        Map<String, String> maps = new HashMap<>();
-        maps.put("1", "o");
-        maps.put("2", "g");
-        maps.put("3", "a");
-        maps.put("4", "j");
-        user.setSecrets(maps);
-        user.setCountry("中国");
-        userList.add(user);
         for (int i = 0; i < 10; i++) {
+            User user = new User();
+            user.setUsername("jack" + i);
+            user.setPassword("psw" + i);
+            user.setHobbies(Arrays.asList(new String[]{"singing", "dancing", "football"}));
+            Map<String, String> maps = new HashMap<>();
+            maps.put("1", "o");
+            maps.put("2", "g");
+            maps.put("3", "a");
+            maps.put("4", "j");
+            user.setSecrets(maps);
+            user.setCountry("中国");
             userList.add(user);
         }
         model.addAttribute("userList", userList);
         model.addAttribute("total", 100);
         model.addAttribute("page", page);
-//        return "index";
-        return "page";
+        return "index";
+//        return "page";
     }
 
     @GetMapping("/page/news")
