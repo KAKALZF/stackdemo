@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>my page</h1>
+<h2 th:text="'attr:'+${#request.getAttribute('name1')}">123</h2>
+<!--<h2 th:text="${name1}'">123</h2>-->
+<h2 th:text="${#request.getContextPath()}">[...]</h2>
+<h2 th:text="${#request.getAttribute('23')}">[...]</h2>
+<h2 th:text="${session.mySessionAttribute}"></h2>
+<span th:text="${session.loginName}"></span>
+</body>
+</html>

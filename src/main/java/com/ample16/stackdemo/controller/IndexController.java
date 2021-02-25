@@ -2,6 +2,7 @@ package com.ample16.stackdemo.controller;
 
 import com.ample16.stackdemo.domain.News;
 import com.ample16.stackdemo.domain.User;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -82,5 +88,22 @@ public class IndexController {
             return new ResponseEntity<Map<String, Object>>(
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/toMyPage")
+    public void toMyPage(HttpServletRequest request, HttpServletResponse response, Model model) throws ServletException, IOException {
+
+//        request.getRequestDispatcher("/toMyPage2").forward(request, response);
+        response.sendRedirect("http://localhost:8090/toMyPage2");
+    }
+
+    @GetMapping("/toMyPage2")
+    public String toMyPage2(HttpServletRequest request, HttpServletResponse response, Model model) throws ServletException, IOException {
+        model.addAttribute("name1", "kaka2");
+        request.setAttribute("name1", "KAKA");
+        HttpSession session = request.getSession();
+        session.setAttribute("mySessionAttribute", "someValue");
+        session.setAttribute("loginName", "用户");
+        return "myPage.html";
     }
 }
