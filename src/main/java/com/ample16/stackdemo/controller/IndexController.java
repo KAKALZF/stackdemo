@@ -106,4 +106,10 @@ public class IndexController {
         session.setAttribute("loginName", "用户");
         return "myPage.html";
     }
+
+
+    @GetMapping("/toMyPage3")
+    public String toMyPage3(HttpServletRequest request, HttpServletResponse response, Model model) throws ServletException, IOException {
+        return "myPage3.html";
+    }
 }
