@@ -2,6 +2,7 @@ package com.ample16.stackdemo.config;
 
 import java.util.Arrays;
 
+import com.ample16.stackdemo.exception.AccessDeniedAuthenticationHandler;
 import com.ample16.stackdemo.filter.OptionsRequestFilter;
 import com.ample16.stackdemo.service.JwtAuthenticationProvider;
 import com.ample16.stackdemo.service.JwtUserService;
@@ -33,6 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/article/**").hasRole("USER")
                 .anyRequest().authenticated()
+                .and()
+                //访问失败处理器
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedAuthenticationHandler())
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
@@ -118,5 +123,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
+    @Bean
+    protected AccessDeniedAuthenticationHandler accessDeniedAuthenticationHandler() {
+        return new AccessDeniedAuthenticationHandler();
+    }
+
 
 }

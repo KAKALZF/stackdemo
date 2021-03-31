@@ -9,6 +9,7 @@ import org.springframework.security.web.context.support.SecurityWebApplicationCo
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -18,6 +19,7 @@ public class TestController {
 
 
     @GetMapping("/hello")
+    @RolesAllowed({"VIP"})
     public String hello() {
         return "hello";
     }
