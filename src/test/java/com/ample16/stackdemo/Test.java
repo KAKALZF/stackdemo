@@ -1,5 +1,6 @@
 package com.ample16.stackdemo;
 
+import com.ample16.stackdemo.config.JwtAuthenticationToken;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
@@ -15,10 +16,13 @@ public class Test {
         String salt = "123";
         Algorithm algorithm = Algorithm.HMAC256(salt);
         Date date = new Date(System.currentTimeMillis() + 3600 * 1000);  //设置1小时后过期
-        System.out.println(JWT.create()
+        String token = JWT.create()
                 .withSubject("kaka")
                 .withExpiresAt(date)
                 .withIssuedAt(new Date())
-                .sign(algorithm));
+                .sign(algorithm);
+        System.out.println(token);
+        JwtAuthenticationToken authToken = new JwtAuthenticationToken(JWT.decode(token));
+        System.out.println(authToken);
     }
 }

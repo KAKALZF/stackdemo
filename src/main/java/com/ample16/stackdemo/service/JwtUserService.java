@@ -50,7 +50,11 @@ public class JwtUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return User.builder().username("kaka").password(passwordEncoder.encode("123456")).roles("USER").build();
+        //根据接收到的用户名来查找用户信息
+        return User.builder().username("kaka").password(passwordEncoder.encode("123456"))
+                .roles("USER")
+//                .authorities("/viewAndOp")
+                .build();
     }
 
     public void createUser(String username, String password) {

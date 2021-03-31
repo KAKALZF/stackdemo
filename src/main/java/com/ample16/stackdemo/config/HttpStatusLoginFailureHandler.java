@@ -18,6 +18,7 @@ public class HttpStatusLoginFailureHandler implements AuthenticationFailureHandl
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(JsonMapper.defaultMapper().toJson(ResponseBean.warn(StatusCode.C_401)));
     }
 }

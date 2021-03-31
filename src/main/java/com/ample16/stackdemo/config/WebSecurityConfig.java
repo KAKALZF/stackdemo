@@ -58,7 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider()).authenticationProvider(jwtAuthenticationProvider());
+        //两种认证方式
+        auth.authenticationProvider(daoAuthenticationProvider())
+                .authenticationProvider(jwtAuthenticationProvider());
     }
 
     @Override
