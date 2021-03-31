@@ -15,25 +15,27 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-public class JwtAuthenticationProvider implements AuthenticationProvider{
+public class JwtAuthenticationProvider implements AuthenticationProvider {
 
-	private JwtUserService userService;
+    private JwtUserService userService;
 
-	public JwtAuthenticationProvider(JwtUserService userService) {
-		this.userService = userService;
-	}
+    public JwtAuthenticationProvider(JwtUserService userService) {
+        this.userService = userService;
+    }
 
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		DecodedJWT jwt = ((JwtAuthenticationToken)authentication).getToken();
-		if(jwt.getExpiresAt().before(Calendar.getInstance().getTime()))
-			throw new NonceExpiredException("Token expires");
-		String username = jwt.getSubject();
-		UserDetails user = userService.getUserLoginInfo(username);
-		if(user == null || user.getPassword()==null)
-			throw new NonceExpiredException("Token expires");
-		String encryptSalt = user.getPassword();
-		try {
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        DecodedJWT jwt = ((JwtAuthenticationToken) authentication).getToken();
+        if (jwt.getExpiresAt().before(Calendar.getInstance().getTime())) {
+            throw new NonceExpiredException("Token expires");
+        }
+        String username = jwt.getSubject();
+        UserDetails user = userService.getUserLoginInfo(username);
+        if (user == null || user.getPassword() == null) {
+            throw new NonceExpiredException("Token expires");
+        }
+        String encryptSalt = user.getPassword();
+        try {
             Algorithm algorithm = Algorithm.HMAC256(encryptSalt);
             JWTVerifier verifier = JWT.require(algorithm)
                     .withSubject(username)
@@ -42,13 +44,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider{
         } catch (Exception e) {
             throw new BadCredentialsException("JWT token verify fail", e);
         }
-		JwtAuthenticationToken token = new JwtAuthenticationToken(user, jwt, user.getAuthorities());
-		return token;
-	}
+        JwtAuthenticationToken token = new JwtAuthenticationToken(user, jwt, user.getAuthorities());
+        return token;
+    }
 
-	@Override
-	public boolean supports(Class<?> authentication) {
-		return authentication.isAssignableFrom(JwtAuthenticationToken.class);
-	}
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.isAssignableFrom(JwtAuthenticationToken.class);
+    }
 
 }
