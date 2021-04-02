@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ample16.stackdemo.mapper.RolePermMapper">
+    <resultMap id="BaseResultMap" type="com.ample16.stackdemo.pojo.dto.RolePermDo">
+        <!--@mbg.generated-->
+        <!--@Table T_RBAC_ROLE_PERM-->
+        <result column="FROLE_ID" property="roleId"/>
+        <result column="FPERMISSION_ID" property="permissionId"/>
+        <result column="FCREATE_TIME" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        FROLE_ID, FPERMISSION_ID, FCREATE_TIME
+    </sql>
+    <insert id="insert" parameterType="com.ample16.stackdemo.pojo.dto.RolePermDo">
+        <!--@mbg.generated-->
+        insert into T_RBAC_ROLE_PERM (FROLE_ID, FPERMISSION_ID, FCREATE_TIME
+        )
+        values (#{roleId}, #{permissionId}, #{createTime}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ample16.stackdemo.pojo.dto.RolePermDo">
+        <!--@mbg.generated-->
+        insert into T_RBAC_ROLE_PERM
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                FROLE_ID,
+            </if>
+            <if test="permissionId != null">
+                FPERMISSION_ID,
+            </if>
+            <if test="createTime != null">
+                FCREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId},
+            </if>
+            <if test="permissionId != null">
+                #{permissionId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+        </trim>
+    </insert>
+</mapper>

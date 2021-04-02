@@ -3,12 +3,28 @@ server:
 spring:
   application:
     name: ample16
-  security:
-    user:
-      name: kaka
-      password: 123456
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.249.220:1521:DEVDB
+    username: kuaidi
+    password: kingdee
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 2
+    minIdle: 2
+    maxActive: 20
+    maxWait: 60000  #配置获取连接等待超时的时间
+    timeBetweenEvictionRunsMillis: 30000 #配置间隔多久才进行一次检测需要关闭的空闲连接（单位：毫秒）
+    minEvictableIdleTimeMillis: #配置一个连接在池中最小生存的时间（单位：毫秒）
+    validationQuery: SELECT A FROM T_POOLPING #配置检查连接
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
 #  redis:
 #    port: 6379
 #    host: 192.168.249.149
 #    password: redis@kuaidi100
 log-path: ${user.dir}
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
