@@ -10,12 +10,9 @@ import java.util.List;
  * @description
  */
 @Data
-public class UserAddOrUpdateReq {
+public class PermissionAddOrUpdateReq {
     private Long id;
-    private String username;
-    private Long clientId;
-    /**
-     * 角色id集合
-     */
-    private List<Long> roleIds;
+    private String name;
+    private Integer type;
+
 }

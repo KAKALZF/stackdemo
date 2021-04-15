@@ -20,5 +20,6 @@ public class PermissionDo implements Serializable {
     private Date updateTime;
 
     private Integer status;
+    private Integer type;
 
 }

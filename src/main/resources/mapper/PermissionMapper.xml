@@ -7,19 +7,15 @@
         <result column="FCREATE_TIME" property="createTime"/>
         <result column="FUPDATE_TIME" property="updateTime"/>
         <result column="FSTATUS" property="status"/>
+        <result column="FTYPE" property="type"/>
     </resultMap>
-    <insert id="insert" parameterType="com.ample16.stackdemo.pojo.dto.PermissionDo">
-    insert into T_RBAC_PERMISSION (FID, FNAME, FCREATE_TIME, 
-      FUPDATE_TIME, FSTATUS)
-    values (#{id}, #{name}, #{createTime}, 
-      #{updateTime}, #{status})
-  </insert>
     <insert id="insertSelective" parameterType="com.ample16.stackdemo.pojo.dto.PermissionDo">
-        insert into T_RBAC_PERMISSION
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT SEQ_BDZS.CURRVAL AS ID FROM DUAL
+        </selectKey>
+        insert into T_BDZS_PERMISSION
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                FID,
-            </if>
+            FID,
             <if test="name != null">
                 FNAME,
             </if>
@@ -32,23 +28,42 @@
             <if test="status != null">
                 FSTATUS,
             </if>
+            <if test="type != null">
+                FTYPE,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id},
-            </if>
-            <if test="fname != null">
+            SEQ_BDZS.nextval,
+            <if test="name != null">
                 #{name},
             </if>
-            <if test="fcreateTime != null">
+            <if test="createTime != null">
                 #{createTime},
             </if>
-            <if test="fupdateTime != null">
+            <if test="updateTime != null">
                 #{updateTime},
             </if>
-            <if test="fstatus != null">
+            <if test="status != null">
                 #{status},
+            </if>
+            <if test="type != null">
+                #{type},
             </if>
         </trim>
     </insert>
+    <update id="update">
+        update T_BDZS_PERMISSION
+        <set>
+            <if test="name!=null and name!=''">
+                FNAME=#{name}
+            </if>
+            <if test="updateTime!=null">
+                FUPDATE_TIME=#{updateTime}
+            </if>
+            <if test="type!=null">
+                FTYPE=#{type}
+            </if>
+        </set>
+        where FID=#{id}
+    </update>
 </mapper>

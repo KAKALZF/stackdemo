@@ -6,12 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface RoleMapper {
-    int insert(RoleDo record);
 
-    int insertSelective(RoleDo record);
+    int add(RoleDo record);
 
     RoleDo findAllById(@Param("id") Long id);
 
+    int update(RoleDo roleDo);
 
 //    deleteByUserId(@Param("userId") Long userId);
 }

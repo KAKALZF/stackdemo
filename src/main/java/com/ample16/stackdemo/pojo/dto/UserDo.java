@@ -25,8 +25,4 @@ public class UserDo implements Serializable {
 
     private Integer status;
 
-    private List<RoleDo> roles;
-
-    private List<PermissionDo> permissionDos;
-
 }

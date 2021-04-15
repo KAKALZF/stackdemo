@@ -1,5 +1,6 @@
 package com.ample16.stackdemo.service;
 
+import com.ample16.stackdemo.pojo.dto.UserDo;
 import com.ample16.stackdemo.pojo.req.UserAddOrUpdateReq;
 
 /**
@@ -14,5 +15,5 @@ public interface IUserService {
 
     void delete(Long userId);
 
-    void findByUserId(Long userId);
+    UserDo findByUserId(Long userId);
 }

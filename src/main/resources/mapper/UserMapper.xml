@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ample16.stackdemo.mapper.UserMapper">
+    <sql id="Base_Column_List">
+  FID,
+  FCLIENT_ID,
+  FUSERNAME,
+  FCREATE_TIME,
+  FUPDATE_TIME,
+  FSTATUS
+</sql>
     <resultMap id="BaseResultMap" type="com.ample16.stackdemo.pojo.dto.UserDo">
         <result column="FID" property="id"/>
         <result column="FCLIENT_ID" property="clientId"/>
@@ -8,12 +16,15 @@
         <result column="FCREATE_TIME" property="createTime"/>
         <result column="FUPDATE_TIME" property="updateTime"/>
         <result column="FSTATUS" property="status"/>
+        <!--   <collection property="roles" ofType="com.ample16.stackdemo.pojo.dto.RoleDo">
+
+           </collection>-->
     </resultMap>
     <insert id="add" parameterType="com.ample16.stackdemo.pojo.dto.UserDo" useGeneratedKeys="true" keyProperty="id">
         <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
-            SELECT SEQ_RBAC.CURRVAL AS ID FROM DUAL
+            SELECT SEQ_BDZS.CURRVAL AS ID FROM DUAL
         </selectKey>
-        insert into T_RBAC_USER
+        insert into T_BDZS_USER
         <trim prefix="(" suffix=")" suffixOverrides=",">
             FID,
             <if test="clientId != null">
@@ -33,7 +44,7 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            SEQ_RBAC.nextval,
+            SEQ_BDZS.nextval,
             <if test="clientId != null">
                 #{clientId},
             </if>
@@ -52,7 +63,7 @@
         </trim>
     </insert>
     <update id="update">
-        update T_RBAC_USER
+        update T_BDZS_USER
         <set>
             <if test="username!=null and username!=''">
                 Fusername=#{username}
@@ -66,4 +77,13 @@
         </set>
         where FID=#{id}
     </update>
+
+    <update id="deleteById">
+        update T_BDZS_USER set FSTATUS=0
+        where FID=#{userId}
+    </update>
+
+    <select id="findById" resultMap="BaseResultMap">
+        select * from T_BDZS_USER where Fid=#{userId}
+    </select>
 </mapper>

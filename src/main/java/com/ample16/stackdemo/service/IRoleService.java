@@ -1,6 +1,7 @@
 package com.ample16.stackdemo.service;
 
 import com.ample16.stackdemo.pojo.dto.RoleDo;
+import com.ample16.stackdemo.pojo.req.RoleAddOrUpdateReq;
 
 /**
  * @author zefeng_lin
@@ -8,9 +9,7 @@ import com.ample16.stackdemo.pojo.dto.RoleDo;
  * @description
  */
 public interface IRoleService {
-    void add(RoleDo roleDo);
-
-    void update(RoleDo roleDo);
+    void addOrUpdate(RoleAddOrUpdateReq roleAddOrUpdateReq);
 
     void delete(Long roleId);
 
