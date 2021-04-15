@@ -1,6 +1,7 @@
-package com.ample16.stackdemo.config;
+package com.ample16.stackdemo.sercurity;
 
-import com.ample16.stackdemo.filter.MyUsernamePasswordAuthenticationFilter;
+import com.ample16.stackdemo.sercurity.config.HttpStatusLoginFailureHandler;
+import com.ample16.stackdemo.sercurity.filter.MyUsernamePasswordAuthenticationFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;

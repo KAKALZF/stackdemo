@@ -1,4 +1,4 @@
-package com.ample16.stackdemo.filter;
+package com.ample16.stackdemo.sercurity.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ample16.stackdemo.config.JwtAuthenticationToken;
+import com.ample16.stackdemo.sercurity.JwtAuthenticationToken;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -30,6 +30,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 
+/**
+ *
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private RequestMatcher requiresAuthenticationRequestMatcher;
@@ -59,6 +62,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        /**
+         * header没带token的，直接放过，因为部分url匿名用户也可以访问
+         * 如果需要不支持匿名用户的请求没带token，这里放过也没问题，因为SecurityContext中没有认证信息，后面会被权限控制模块拦截??
+         */
         if (!requiresAuthentication(request, response)) {
             filterChain.doFilter(request, response);
             return;
@@ -66,19 +73,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authResult = null;
         AuthenticationException failed = null;
         try {
+            //从头中获取token并封装后提交给AuthenticationManager认证
             String token = getJwtToken(request);
             if (StringUtils.isNotBlank(token)) {
                 JwtAuthenticationToken authToken = new JwtAuthenticationToken(JWT.decode(token));
                 authResult = this.getAuthenticationManager().authenticate(authToken);
             } else {
-                failed = new InsufficientAuthenticationException("JWT is Empty");
+                failed = new InsufficientAuthenticationException("JWT不能为空");
             }
         } catch (JWTDecodeException e) {
-            logger.error("JWT format error", e);
-            failed = new InsufficientAuthenticationException("JWT format error", failed);
+            logger.error("JWT格式错误", e);
+            failed = new InsufficientAuthenticationException("JWT格式错误", failed);
         } catch (InternalAuthenticationServiceException e) {
             logger.error(
-                    "An internal error occurred while trying to authenticate the user.",
+                    "内部认证异常",
                     failed);
             failed = e;
         } catch (AuthenticationException e) {
@@ -86,24 +94,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             failed = e;
         }
         if (authResult != null) {
-            successfulAuthentication(request, response, filterChain, authResult);
+            //token认证成功
+            authenticationSuc(request, response, filterChain, authResult);
         } else if (!permissiveRequest(request)) {
-            unsuccessfulAuthentication(request, response, failed);
+            //token认证失败，并且这个request不在例外列表里，才会返回错误
+            authencationFail(request, response, failed);
             return;
         }
-
         filterChain.doFilter(request, response);
     }
 
-    protected void unsuccessfulAuthentication(HttpServletRequest request,
-                                              HttpServletResponse response, AuthenticationException failed)
+    protected void authencationFail(HttpServletRequest request,
+                                    HttpServletResponse response, AuthenticationException failed)
             throws IOException, ServletException {
         SecurityContextHolder.clearContext();
         failureHandler.onAuthenticationFailure(request, response, failed);
     }
 
-    protected void successfulAuthentication(HttpServletRequest request,
-                                            HttpServletResponse response, FilterChain chain, Authentication authResult)
+    protected void authenticationSuc(HttpServletRequest request,
+                                     HttpServletResponse response, FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authResult);
         successHandler.onAuthenticationSuccess(request, response, authResult);

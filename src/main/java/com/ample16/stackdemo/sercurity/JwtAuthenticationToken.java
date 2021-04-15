@@ -1,4 +1,4 @@
-package com.ample16.stackdemo.config;
+package com.ample16.stackdemo.sercurity;
 
 import java.util.Collection;
 import java.util.Collections;

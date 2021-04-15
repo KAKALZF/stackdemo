@@ -1,6 +1,6 @@
 package com.ample16.stackdemo;
 
-import com.ample16.stackdemo.config.JwtAuthenticationToken;
+import com.ample16.stackdemo.sercurity.JwtAuthenticationToken;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 

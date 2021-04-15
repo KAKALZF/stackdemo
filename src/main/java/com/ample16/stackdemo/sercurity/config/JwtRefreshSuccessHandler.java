@@ -1,4 +1,4 @@
-package com.ample16.stackdemo.config;
+package com.ample16.stackdemo.sercurity.config;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -9,7 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ample16.stackdemo.service.JwtUserService;
+import com.ample16.stackdemo.sercurity.JwtAuthenticationToken;
+import com.ample16.stackdemo.sercurity.JwtUserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

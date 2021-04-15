@@ -1,4 +1,4 @@
-package com.ample16.stackdemo.filter;
+package com.ample16.stackdemo.sercurity.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+/**
+ * 拦截用户提价的信息,封装为UsernamePasswordAuthenticationToken,交给DaoAuthenticationProvider-->JwtUserService
+ */
 public class MyUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public MyUsernamePasswordAuthenticationFilter() {

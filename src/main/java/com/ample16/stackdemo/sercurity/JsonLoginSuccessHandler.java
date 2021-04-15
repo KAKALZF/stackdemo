@@ -1,8 +1,8 @@
-package com.ample16.stackdemo.config;
+package com.ample16.stackdemo.sercurity;
 
 import com.ample16.stackdemo.pojo.ResponseBean;
 import com.ample16.stackdemo.pojo.StatusCode;
-import com.ample16.stackdemo.service.JwtUserService;
+import com.ample16.stackdemo.sercurity.JwtUserService;
 import com.ample16.stackdemo.util.JsonMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;

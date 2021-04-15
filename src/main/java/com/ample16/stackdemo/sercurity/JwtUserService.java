@@ -1,4 +1,4 @@
-package com.ample16.stackdemo.service;
+package com.ample16.stackdemo.sercurity;
 
 
 import java.util.Date;
@@ -19,7 +19,8 @@ public class JwtUserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     public JwtUserService() {
-        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();  //默认使用 bcrypt， strength=10
+        //默认使用 bcrypt， strength=10
+        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     public UserDetails getUserLoginInfo(String username) {

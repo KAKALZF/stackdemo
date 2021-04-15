@@ -1,8 +1,7 @@
-package com.ample16.stackdemo.service;
+package com.ample16.stackdemo.sercurity;
 
 import java.util.Calendar;
 
-import com.ample16.stackdemo.config.JwtAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -23,6 +22,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         this.userService = userService;
     }
 
+    /**
+     * 根据提交过来的信息(已被封装成Authentication)做认证
+     *
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         DecodedJWT jwt = ((JwtAuthenticationToken) authentication).getToken();
@@ -30,6 +36,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throw new NonceExpiredException("Token expires");
         }
         String username = jwt.getSubject();
+        //根据用户名获取数据库里的信息,然后和用户所传过来的信息比对
         UserDetails user = userService.getUserLoginInfo(username);
         if (user == null || user.getPassword() == null) {
             throw new NonceExpiredException("Token expires");

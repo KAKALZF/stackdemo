@@ -1,16 +1,19 @@
-package com.ample16.stackdemo.config;
+package com.ample16.stackdemo.sercurity.config;
 
 import java.util.Arrays;
 
-import com.ample16.stackdemo.exception.AccessDeniedAuthenticationHandler;
-import com.ample16.stackdemo.filter.OptionsRequestFilter;
-import com.ample16.stackdemo.service.JwtAuthenticationProvider;
-import com.ample16.stackdemo.service.JwtUserService;
+import com.ample16.stackdemo.sercurity.JsonLoginConfigurer;
+import com.ample16.stackdemo.sercurity.JsonLoginSuccessHandler;
+import com.ample16.stackdemo.sercurity.exception.AccessDeniedAuthenticationHandler;
+import com.ample16.stackdemo.sercurity.filter.OptionsRequestFilter;
+import com.ample16.stackdemo.sercurity.JwtAuthenticationProvider;
+import com.ample16.stackdemo.sercurity.JwtUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,8 +26,18 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-
+/**
+ * 登录流程:
+ * 用户提交登录数据-->MyUsernamePasswordAuthenticationFilter拦截用户提价的信息,封装为UsernamePasswordAuthenticationToken,
+ * -->交给DaoAuthenticationProvider,DaoAuthenticationProvider交给JwtUserService处理,验证信息,失败抛异常,信息找正确则设置相关权限信息到UserDetails
+ * -->认证错误交由HttpStatusLoginFailureHandler处理(返回异常),正确则交由JsonLoginSuccessHandler处理(设置用户加密信息到响应头,下次带上相关信息便于验证)
+ *
+ * 验权流程:
+ *  JwtAuthenticationFilter过滤器,
+ *
+ */
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -35,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/article/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
-                //访问失败处理器
                 .exceptionHandling()
+                //设置访问失败处理器
                 .accessDeniedHandler(accessDeniedAuthenticationHandler())
                 .and()
                 .csrf().disable()
@@ -51,10 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new OptionsRequestFilter(), CorsFilter.class)
                 .apply(new JsonLoginConfigurer<>()).loginSuccessHandler(jsonLoginSuccessHandler())
                 .and()
+                //jwt,token处理
                 .apply(new JwtLoginConfigurer<>()).tokenValidSuccessHandler(jwtRefreshSuccessHandler()).permissiveRequestUrls("/logout")
                 .and()
                 .logout()
-//		        .logoutUrl("/logout")   //默认就是"/logout"
+                //默认就是"/logout"
+                //.logoutUrl("/logout")
                 .addLogoutHandler(tokenClearLogoutHandler())
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
                 .and()
