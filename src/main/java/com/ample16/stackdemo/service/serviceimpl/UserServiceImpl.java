@@ -1,11 +1,9 @@
 package com.ample16.stackdemo.service.serviceimpl;
 
-import com.ample16.stackdemo.mapper.RoleMapper;
-import com.ample16.stackdemo.mapper.UserMapper;
-import com.ample16.stackdemo.mapper.UserRoleMapper;
-import com.ample16.stackdemo.pojo.dto.UserDo;
-import com.ample16.stackdemo.pojo.dto.UserRoleDo;
+import com.ample16.stackdemo.mapper.*;
+import com.ample16.stackdemo.pojo.dto.*;
 import com.ample16.stackdemo.pojo.req.UserAddOrUpdateReq;
+import com.ample16.stackdemo.pojo.resp.UserInfoResp;
 import com.ample16.stackdemo.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author zefeng_lin
@@ -34,6 +29,12 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     UserRoleMapper userRoleMapper;
+
+    @Autowired
+    PermissionMapper permissionMapper;
+
+    @Autowired
+    RolePermMapper rolePermMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -75,5 +76,48 @@ public class UserServiceImpl implements IUserService {
     public UserDo findByUserId(Long userId) {
         UserDo userDo = userMapper.findById(userId);
         return userDo;
+    }
+
+    @Override
+    public UserInfoResp getUserInfo(Long clientId) {
+        UserInfoResp userInfoResp = new UserInfoResp();
+        ArrayList<UserInfoResp.AuthInfo> authInfos = new ArrayList<>();
+        ArrayList<UserInfoResp.RoleInfo> roleInfos = new ArrayList<>();
+        userInfoResp.setAuthInfos(authInfos);
+        userInfoResp.setRoleInfos(roleInfos);
+        UserDo userDo = userMapper.findByClientId(clientId);
+        Long userDoId = userDo.getId();
+        List<UserRoleDo> userRoles = userRoleMapper.findAllByUserId(userDoId);
+        if (CollectionUtils.isEmpty(userRoles)) {
+            return userInfoResp;
+        }
+        ArrayList<Long> roleIds = new ArrayList<>();
+        for (UserRoleDo userRole : userRoles) {
+            roleIds.add(userRole.getRoleId());
+//            UserInfoResp.RoleInfo roleInfo = new UserInfoResp.RoleInfo();
+//            roleInfo.setName();
+//            roleInfos.add(roleInfo);
+        }
+        List<RoleDo> roleDos = roleMapper.findByIds(roleIds);
+        for (RoleDo roleDo : roleDos) {
+            UserInfoResp.RoleInfo roleInfo = new UserInfoResp.RoleInfo();
+            roleInfo.setName(roleDo.getName());
+            roleInfos.add(roleInfo);
+        }
+        List<RolePermDo> rolePermDos = rolePermMapper.findAllByRoleIds(roleIds);
+        if (CollectionUtils.isEmpty(rolePermDos)) {
+            return userInfoResp;
+        }
+        ArrayList<Long> permissionIds = new ArrayList<Long>();
+        for (RolePermDo rolePermDo : rolePermDos) {
+            permissionIds.add(rolePermDo.getPermissionId());
+        }
+        List<PermissionDo> permissionDos = permissionMapper.findByIds(permissionIds);
+        for (PermissionDo permissionDo : permissionDos) {
+            UserInfoResp.AuthInfo authInfo = new UserInfoResp.AuthInfo();
+            authInfo.setName(permissionDo.getName());
+            authInfo.setType(permissionDo.getType());
+        }
+        return userInfoResp;
     }
 }

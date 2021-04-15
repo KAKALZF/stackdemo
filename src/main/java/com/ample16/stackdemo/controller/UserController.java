@@ -4,7 +4,10 @@ import com.ample16.stackdemo.mapper.UserMapper;
 import com.ample16.stackdemo.pojo.ResponseBean;
 import com.ample16.stackdemo.pojo.dto.UserDo;
 import com.ample16.stackdemo.pojo.req.UserAddOrUpdateReq;
+import com.ample16.stackdemo.pojo.resp.UserInfoResp;
 import com.ample16.stackdemo.service.IUserService;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +32,15 @@ public class UserController {
         return ResponseBean.success();
     }
 
-    @GetMapping("/add")
-    public ResponseBean add() {
-        UserDo user = new UserDo();
-        user.setUsername("test1");
-        user.setClientId(10L);
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        Long add = userMapper.add(user);
-        Long id = user.getId();
-        return ResponseBean.success().setData(id);
+    @GetMapping("/getInfo")
+    public ResponseBean getUserInfo(@RequestHeader("bdzsToken") String token) {
+        System.out.println("=========" + token);
+        DecodedJWT decode = JWT.decode(token);
+        String subject = decode.getSubject();
+        Date expiresAt = decode.getExpiresAt();
+        UserInfoResp userInfo = userService.getUserInfo(Long.valueOf(subject));
+        return ResponseBean.success().setData(userInfo);
     }
+
 
 }

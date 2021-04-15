@@ -24,5 +24,6 @@ public class RoleDo implements Serializable {
 
     private Integer status;
 
+//    private List<PermissionDo> permissionDoList;
 
 }

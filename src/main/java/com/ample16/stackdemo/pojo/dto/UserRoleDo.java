@@ -3,6 +3,7 @@ package com.ample16.stackdemo.pojo.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -18,4 +19,6 @@ public class UserRoleDo {
     private Long roleId;
 
     private Date createTime;
+
+
 }

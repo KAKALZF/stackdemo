@@ -14,5 +14,8 @@ public interface UserRoleMapper {
 
     int batchInsert(@Param("userRoles") List<UserRoleDo> userRoles);
 
+    List<UserRoleDo> findAllByUserId(@Param("userId")Long userId);
+
+
 
 }

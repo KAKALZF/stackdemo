@@ -4,14 +4,18 @@ import com.ample16.stackdemo.pojo.dto.RoleDo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface RoleMapper {
 
     int add(RoleDo record);
 
-    RoleDo findAllById(@Param("id") Long id);
+    RoleDo findById(@Param("id") Long id);
 
     int update(RoleDo roleDo);
 
-//    deleteByUserId(@Param("userId") Long userId);
+    List<RoleDo> findByIds(@Param("roleIds") List<Long> roleIds);
+
+
 }

@@ -17,7 +17,7 @@ public class Test {
         Algorithm algorithm = Algorithm.HMAC256(salt);
         Date date = new Date(System.currentTimeMillis() + 3600 * 1000);  //设置1小时后过期
         String token = JWT.create()
-                .withSubject("kaka")
+                .withSubject("9527")
                 .withExpiresAt(date)
                 .withIssuedAt(new Date())
                 .sign(algorithm);

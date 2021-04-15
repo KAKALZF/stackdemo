@@ -15,4 +15,9 @@ public interface RolePermMapper {
 
     int batchInsert(@Param("rolePermDos") List<RolePermDo> rolePermDos);
 
+    List<RolePermDo> findAllByRoleId(@Param("roleId") Long roleId);
+
+    List<RolePermDo> findAllByRoleIds(@Param("roleIds") List<Long> roleIds);
+
+
 }
