@@ -8,7 +8,7 @@ import lombok.Data;
  * @description
  */
 @Data
-public class RouteDataApiVo {
+public class RouteDataResp {
 
     /**
      * com : yuantong
@@ -26,10 +26,10 @@ public class RouteDataApiVo {
     private String com;
     private String from;
     private String to;
-    private int type;
+    private Integer type;
     private String count;
-    private int startTime;
-    private int expendTime;
+    private Integer startTime;
+    private Integer expendTime;
     private String transportCount;
     private String signRate;
     private String returnRate;

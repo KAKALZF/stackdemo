@@ -2,8 +2,8 @@ package com.ample16.stackdemo.controller;
 
 import com.ample16.stackdemo.pojo.ResponseBean;
 import com.ample16.stackdemo.pojo.req.RouteDataQueryReq;
-import com.ample16.stackdemo.pojo.resp.RouteDataApiVo;
-import com.ample16.stackdemo.pojo.resp.RouteDataVo;
+import com.ample16.stackdemo.pojo.resp.RouteDataApiStrVo;
+import com.ample16.stackdemo.pojo.resp.RouteDataResp;
 import com.ample16.stackdemo.service.serviceimpl.RouteDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +27,7 @@ public class RouteDataController {
 
 //    @Secured("ROLE_ADMIN")
     public ResponseBean getInfo(@RequestBody RouteDataQueryReq routeDataQueryReq) {
-        List<RouteDataApiVo> routeData = routeDataService.getRouteData(routeDataQueryReq);
+        List<RouteDataApiStrVo> routeData = routeDataService.getRouteData(routeDataQueryReq);
         return ResponseBean.success().setData(routeData);
     }
 }

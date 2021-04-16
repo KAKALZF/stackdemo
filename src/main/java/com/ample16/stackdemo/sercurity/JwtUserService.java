@@ -1,6 +1,7 @@
 package com.ample16.stackdemo.sercurity;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.security.core.userdetails.User;
@@ -42,9 +43,20 @@ public class JwtUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //根据接收到的用户名来查找用户信息
         username = "9527";
+        ArrayList<String> authorities = new ArrayList<String>();
+//        authorities.add("fieldDataAuth|route|com");
+        authorities.add("fieldDataAuth|route|route");
+        authorities.add("fieldDataAuth|route|type");
+        authorities.add("fieldDataAuth|route|count");
+        authorities.add("fieldDataAuth|route|startTime");
+        authorities.add("fieldDataAuth|route|expendTime");
+        authorities.add("fieldDataAuth|route|transportCount");
+        authorities.add("fieldDataAuth|route|signRate");
+        authorities.add("fieldDataAuth|route|returnRate");
+        String[] strings = authorities.toArray(new String[authorities.size()]);
         return User.builder().username(username).password("bdzs@" + username)
-                .roles("USER","ADMIN")
-                .authorities("admins", "read_account")
+                .roles("USER", "ADMIN")
+                .authorities(strings)
                 .build();
     }
 
