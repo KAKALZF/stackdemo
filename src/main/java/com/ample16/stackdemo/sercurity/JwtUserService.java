@@ -44,11 +44,11 @@ public class JwtUserService implements UserDetailsService {
         //根据接收到的用户名来查找用户信息
         username = "9527";
         ArrayList<String> authorities = new ArrayList<String>();
-//        authorities.add("fieldDataAuth|route|com");
+        authorities.add("fieldDataAuth|route|com");
         authorities.add("fieldDataAuth|route|route");
-        authorities.add("fieldDataAuth|route|type");
-        authorities.add("fieldDataAuth|route|count");
-        authorities.add("fieldDataAuth|route|startTime");
+//        authorities.add("fieldDataAuth|route|type");
+//        authorities.add("fieldDataAuth|route|count");
+//        authorities.add("fieldDataAuth|route|startTime");
         authorities.add("fieldDataAuth|route|expendTime");
         authorities.add("fieldDataAuth|route|transportCount");
         authorities.add("fieldDataAuth|route|signRate");

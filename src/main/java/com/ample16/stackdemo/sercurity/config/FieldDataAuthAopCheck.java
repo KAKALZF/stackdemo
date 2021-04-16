@@ -1,10 +1,9 @@
 package com.ample16.stackdemo.sercurity.config;
 
-import com.ample16.stackdemo.pojo.resp.RouteDataApiStrVo;
-import com.ample16.stackdemo.pojo.resp.RouteDataResp;
+import com.ample16.stackdemo.pojo.resp.DataStrVo;
+import com.ample16.stackdemo.pojo.resp.RouteDataStrVo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +13,10 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by linzefeng on 2021-04-16
@@ -36,10 +35,9 @@ public class FieldDataAuthAopCheck {
 
 
     @Around("annotation()")
-    public List<RouteDataApiStrVo> around(ProceedingJoinPoint pjp) {
+    public List<DataStrVo> around(ProceedingJoinPoint pjp) {
         System.out.println("======aop========");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         HashSet<String> authoritySet = new HashSet<>();
         for (GrantedAuthority authority : authorities) {
@@ -47,24 +45,17 @@ public class FieldDataAuthAopCheck {
             System.out.println(authorityStr);
             authoritySet.add(authorityStr);
         }
-        List<String> collect = authoritySet.stream()
-                .filter(auth -> auth.startsWith("fieldDataAuth|route|"))
-                .collect(Collectors.toList());
-        ArrayList<String> authFields = new ArrayList<String>();
-        for (String s : collect) {
-            authFields.add(s.replace("fieldDataAuth|route|", ""));
-        }
-        List<RouteDataApiStrVo> routeDataList = null;
+        List<DataStrVo> dataList = null;
         try {
-            routeDataList = (List<RouteDataApiStrVo>) pjp.proceed();
-            for (RouteDataApiStrVo routeDataApiStrVo : routeDataList) {
-                authHandler(authFields, routeDataApiStrVo);
+            dataList = (List<DataStrVo>) pjp.proceed();
+            for (DataStrVo dataStrVo : dataList) {
+                authHandler2(authoritySet, dataStrVo);
             }
         } catch (Throwable e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return routeDataList;
+        return dataList;
     }
 
     /**
@@ -95,6 +86,24 @@ public class FieldDataAuthAopCheck {
                 }
             }
         } catch (IntrospectionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void authHandler2(HashSet<String> authorities, Object obj) {
+        try {
+            Field[] declaredFields = obj.getClass().getDeclaredFields();
+            for (Field declaredField : declaredFields) {
+                declaredField.setAccessible(true);
+                FieldAuthCheck annotation = declaredField.getAnnotation(FieldAuthCheck.class);
+                if (Objects.nonNull(annotation)) {
+                    String s = annotation.authName();
+                    if (!authorities.contains(s)) {
+                        declaredField.set(obj, "无权限");
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
