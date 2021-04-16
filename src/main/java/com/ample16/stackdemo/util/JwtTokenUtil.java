@@ -7,7 +7,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kuaidi100.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 /**
@@ -40,6 +39,6 @@ public class JwtTokenUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encode("9527", "bdzs@9527", new Date(System.currentTimeMillis() + 1000*60)));
+        System.out.println(encode("9527", "bdzs@9527", new Date(System.currentTimeMillis() + 1000*60*60*24)));
     }
 }

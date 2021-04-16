@@ -2,7 +2,7 @@ package com.ample16.stackdemo.service;
 
 import com.ample16.stackdemo.pojo.dto.UserDo;
 import com.ample16.stackdemo.pojo.req.UserAddOrUpdateReq;
-import com.ample16.stackdemo.pojo.resp.UserInfoResp;
+import com.ample16.stackdemo.pojo.resp.UserInfoVo;
 
 /**
  * @author zefeng_lin
@@ -19,5 +19,5 @@ public interface IUserService {
     UserDo findByUserId(Long userId);
 
 
-    UserInfoResp getUserInfo(Long clientId);
+    UserInfoVo getUserInfo(Long clientId);
 }

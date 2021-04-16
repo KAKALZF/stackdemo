@@ -3,7 +3,7 @@ package com.ample16.stackdemo.service.serviceimpl;
 import com.ample16.stackdemo.mapper.*;
 import com.ample16.stackdemo.pojo.dto.*;
 import com.ample16.stackdemo.pojo.req.UserAddOrUpdateReq;
-import com.ample16.stackdemo.pojo.resp.UserInfoResp;
+import com.ample16.stackdemo.pojo.resp.UserInfoVo;
 import com.ample16.stackdemo.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,17 +79,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserInfoResp getUserInfo(Long clientId) {
-        UserInfoResp userInfoResp = new UserInfoResp();
-        ArrayList<UserInfoResp.AuthInfo> authInfos = new ArrayList<>();
-        ArrayList<UserInfoResp.RoleInfo> roleInfos = new ArrayList<>();
-        userInfoResp.setAuthInfos(authInfos);
-        userInfoResp.setRoleInfos(roleInfos);
+    public UserInfoVo getUserInfo(Long clientId) {
+        UserInfoVo userInfoVo = new UserInfoVo();
+        ArrayList<UserInfoVo.AuthInfo> authInfos = new ArrayList<>();
+        ArrayList<UserInfoVo.RoleInfo> roleInfos = new ArrayList<>();
+        userInfoVo.setAuthInfos(authInfos);
+        userInfoVo.setRoleInfos(roleInfos);
         UserDo userDo = userMapper.findByClientId(clientId);
         Long userDoId = userDo.getId();
         List<UserRoleDo> userRoles = userRoleMapper.findAllByUserId(userDoId);
         if (CollectionUtils.isEmpty(userRoles)) {
-            return userInfoResp;
+            return userInfoVo;
         }
         ArrayList<Long> roleIds = new ArrayList<>();
         for (UserRoleDo userRole : userRoles) {
@@ -100,13 +100,13 @@ public class UserServiceImpl implements IUserService {
         }
         List<RoleDo> roleDos = roleMapper.findByIds(roleIds);
         for (RoleDo roleDo : roleDos) {
-            UserInfoResp.RoleInfo roleInfo = new UserInfoResp.RoleInfo();
+            UserInfoVo.RoleInfo roleInfo = new UserInfoVo.RoleInfo();
             roleInfo.setName(roleDo.getName());
             roleInfos.add(roleInfo);
         }
         List<RolePermDo> rolePermDos = rolePermMapper.findAllByRoleIds(roleIds);
         if (CollectionUtils.isEmpty(rolePermDos)) {
-            return userInfoResp;
+            return userInfoVo;
         }
         ArrayList<Long> permissionIds = new ArrayList<Long>();
         for (RolePermDo rolePermDo : rolePermDos) {
@@ -114,10 +114,10 @@ public class UserServiceImpl implements IUserService {
         }
         List<PermissionDo> permissionDos = permissionMapper.findByIds(permissionIds);
         for (PermissionDo permissionDo : permissionDos) {
-            UserInfoResp.AuthInfo authInfo = new UserInfoResp.AuthInfo();
+            UserInfoVo.AuthInfo authInfo = new UserInfoVo.AuthInfo();
             authInfo.setName(permissionDo.getName());
             authInfo.setType(permissionDo.getType());
         }
-        return userInfoResp;
+        return userInfoVo;
     }
 }

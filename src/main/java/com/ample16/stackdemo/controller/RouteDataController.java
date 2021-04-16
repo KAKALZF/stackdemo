@@ -1,9 +1,16 @@
 package com.ample16.stackdemo.controller;
 
 import com.ample16.stackdemo.pojo.ResponseBean;
-import org.springframework.security.access.annotation.Secured;
+import com.ample16.stackdemo.pojo.req.RouteDataQueryReq;
+import com.ample16.stackdemo.pojo.resp.RouteDataApiVo;
+import com.ample16.stackdemo.pojo.resp.RouteDataVo;
+import com.ample16.stackdemo.service.serviceimpl.RouteDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author zefeng_lin
@@ -13,10 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/routerData")
 public class RouteDataController {
+    @Autowired
+    RouteDataService routeDataService;
 
     @RequestMapping("/getInfo")
-    @Secured("ROLE_ADMIN")
-    public ResponseBean getInfo() {
-        return ResponseBean.success();
+
+//    @Secured("ROLE_ADMIN")
+    public ResponseBean getInfo(@RequestBody RouteDataQueryReq routeDataQueryReq) {
+        List<RouteDataApiVo> routeData = routeDataService.getRouteData(routeDataQueryReq);
+        return ResponseBean.success().setData(routeData);
     }
 }

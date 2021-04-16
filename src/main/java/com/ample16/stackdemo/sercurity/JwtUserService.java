@@ -43,7 +43,7 @@ public class JwtUserService implements UserDetailsService {
         //根据接收到的用户名来查找用户信息
         username = "9527";
         return User.builder().username(username).password("bdzs@" + username)
-                .roles("USER")
+                .roles("USER","ADMIN")
                 .authorities("admins", "read_account")
                 .build();
     }

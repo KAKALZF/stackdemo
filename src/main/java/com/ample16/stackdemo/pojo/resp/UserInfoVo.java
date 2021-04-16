@@ -10,7 +10,7 @@ import java.util.List;
  * @description
  */
 @Data
-public class UserInfoResp {
+public class UserInfoVo {
     private List<AuthInfo> authInfos;
     private List<RoleInfo> roleInfos;
 
@@ -19,6 +19,7 @@ public class UserInfoResp {
         private Integer type;
         private String name;
     }
+
     @Data
     public static class RoleInfo {
         private String name;

@@ -2,9 +2,8 @@ package com.ample16.stackdemo.controller;
 
 import com.ample16.stackdemo.mapper.UserMapper;
 import com.ample16.stackdemo.pojo.ResponseBean;
-import com.ample16.stackdemo.pojo.dto.UserDo;
 import com.ample16.stackdemo.pojo.req.UserAddOrUpdateReq;
-import com.ample16.stackdemo.pojo.resp.UserInfoResp;
+import com.ample16.stackdemo.pojo.resp.UserInfoVo;
 import com.ample16.stackdemo.service.IUserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -38,7 +37,7 @@ public class UserController {
         DecodedJWT decode = JWT.decode(token);
         String subject = decode.getSubject();
         Date expiresAt = decode.getExpiresAt();
-        UserInfoResp userInfo = userService.getUserInfo(Long.valueOf(subject));
+        UserInfoVo userInfo = userService.getUserInfo(Long.valueOf(subject));
         return ResponseBean.success().setData(userInfo);
     }
 
