@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ample16.stackdemo.mapper.UserRoleMapper">
+<mapper namespace="com.kuaidi100.bdindex.mapper.UserRoleMapper">
     <sql id="Base_Column_List">
     FUSER_ID,
     FROLE_ID,
     FCREATE_TIME
 </sql>
-    <resultMap id="BaseResultMap" type="com.ample16.stackdemo.pojo.dto.UserRoleDo">
+    <resultMap id="BaseResultMap" type="com.kuaidi100.bdindex.pojo.dto.UserRoleDo">
         <result column="FUSER_ID" jdbcType="DECIMAL" property="userId"/>
         <result column="FROLE_ID" jdbcType="DECIMAL" property="roleId"/>
         <result column="FCREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
 
     </resultMap>
-    <insert id="insertSelective" parameterType="com.ample16.stackdemo.pojo.dto.UserRoleDo">
+    <insert id="insertSelective" parameterType="com.kuaidi100.bdindex.pojo.dto.UserRoleDo">
         insert into T_BDZS_USER_ROLE
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ample16.stackdemo.mapper.RoleMapper">
+<mapper namespace="com.kuaidi100.bdindex.mapper.RoleMapper">
     <sql id="Base_Column_List">
 	FID,
 	FNAME,
@@ -8,13 +8,13 @@
 	FUPDATE_TIME,
 	FSTATUS
 </sql>
-    <resultMap id="BaseResultMap" type="com.ample16.stackdemo.pojo.dto.RoleDo">
+    <resultMap id="BaseResultMap" type="com.kuaidi100.bdindex.pojo.dto.RoleDo">
         <result column="FID" property="id"/>
         <result column="FNAME" property="name"/>
         <result column="FCREATE_TIME" property="createTime"/>
         <result column="FUPDATE_TIME" property="updateTime"/>
         <result column="FSTATUS" property="status"/>
-        <!--     <collection property="permissionDoList" ofType="com.ample16.stackdemo.pojo.dto.PermissionDo">
+        <!--     <collection property="permissionDoList" ofType="PermissionDo">
                  <result column="FID" property="id"/>
                  <result column="FNAME" property="name"/>
                  <result column="FCREATE_TIME" property="createTime"/>
@@ -23,7 +23,7 @@
                  <result column="FTYPE" property="type"/>
              </collection>-->
     </resultMap>
-    <insert id="add" parameterType="com.ample16.stackdemo.pojo.dto.RoleDo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="add" parameterType="com.kuaidi100.bdindex.pojo.dto.RoleDo" useGeneratedKeys="true" keyProperty="id">
         <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
             SELECT SEQ_BDZS.CURRVAL AS ID FROM DUAL
         </selectKey>

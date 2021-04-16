@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ample16.stackdemo.mapper.PermissionMapper">
+<mapper namespace="com.kuaidi100.bdindex.mapper.PermissionMapper">
     <sql id="Base_Column_List">
     FID,
     FNAME,
@@ -9,7 +9,7 @@
     FSTATUS,
     FTYPE
 </sql>
-    <resultMap id="BaseResultMap" type="com.ample16.stackdemo.pojo.dto.PermissionDo">
+    <resultMap id="BaseResultMap" type="com.kuaidi100.bdindex.pojo.dto.PermissionDo">
         <result column="FID" property="id"/>
         <result column="FNAME" property="name"/>
         <result column="FCREATE_TIME" property="createTime"/>
@@ -17,7 +17,7 @@
         <result column="FSTATUS" property="status"/>
         <result column="FTYPE" property="type"/>
     </resultMap>
-    <insert id="insertSelective" parameterType="com.ample16.stackdemo.pojo.dto.PermissionDo">
+    <insert id="insertSelective" parameterType="com.kuaidi100.bdindex.pojo.dto.PermissionDo">
         <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
             SELECT SEQ_BDZS.CURRVAL AS ID FROM DUAL
         </selectKey>
