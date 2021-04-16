@@ -2,7 +2,14 @@ package com.ample16.stackdemo;
 
 import com.ample16.stackdemo.sercurity.JwtAuthenticationToken;
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -21,8 +28,52 @@ public class Test {
                 .withExpiresAt(date)
                 .withIssuedAt(new Date())
                 .sign(algorithm);
-        System.out.println(token);
+        System.out.println("token:" + token);
         JwtAuthenticationToken authToken = new JwtAuthenticationToken(JWT.decode(token));
         System.out.println(authToken);
+        DecodedJWT decode = JWT.decode(token);
+        System.out.println("decodeToken:" + decode.getToken());
+
+
+    }
+
+    @org.junit.Test
+    public void test1() {
+//        System.out.println(System.currentTimeMillis() + 3600 * 1000);
+        Date date = new Date(1618500161201L);
+        String encryptSalt = "123";
+        String username = "kaka";
+        Algorithm algorithm = Algorithm.HMAC256(encryptSalt);
+        Algorithm algorithm2 = Algorithm.HMAC256("1234");
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withSubject(username)
+                .build();
+
+        String token = JWT.create()
+                .withSubject("kaka")
+                .withExpiresAt(date)
+                .withIssuedAt(new Date())
+                .sign(algorithm2);
+        DecodedJWT decode = JWT.decode(token);
+        DecodedJWT verify = verifier.verify(token);
+        System.out.println(verifier.verify(token));
+    }
+
+    @org.junit.Test
+    public void test2() {
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        System.out.println(passwordEncoder.encode("123456"));
+        UserDetails build = User.builder().username("kaka").password(passwordEncoder.encode("123456"))
+                .roles("USER")
+//                .authorities("/viewAndOp")
+                .build();
+        System.out.println("user");
+        System.out.println(BCrypt.gensalt());
+        System.out.println(BCrypt.gensalt());
+    }
+
+
+    @org.junit.Test
+    public void test3() {
     }
 }

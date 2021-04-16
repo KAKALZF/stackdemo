@@ -2,8 +2,10 @@ package com.ample16.stackdemo.sercurity;
 
 import com.ample16.stackdemo.pojo.ResponseBean;
 import com.ample16.stackdemo.pojo.StatusCode;
-import com.ample16.stackdemo.sercurity.JwtUserService;
 import com.ample16.stackdemo.util.JsonMapper;
+import com.ample16.stackdemo.util.JwtTokenUtil;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -12,20 +14,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 public class JsonLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private JwtUserService jwtUserService;
+    private LoginUserService loginUserService;
 
-    public JsonLoginSuccessHandler(JwtUserService jwtUserService) {
-        this.jwtUserService = jwtUserService;
+    public JsonLoginSuccessHandler(LoginUserService loginUserService) {
+        this.loginUserService = loginUserService;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        //生成token，并把token加密相关信息缓存，具体请看实现类
-        String token = jwtUserService.saveUserLoginInfo((UserDetails) authentication.getPrincipal());
+        //生成token返回
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        //密码为空,不会设置到authentication里面
+        String password = userDetails.getPassword();
+        //这里原本是用户密码,使用固定方式的加密的私钥即可
+        Date date = new Date(System.currentTimeMillis() + 3600 * 1000);  //设置1小时后过期
+        String token = JwtTokenUtil.encode(username, "bdzs@" + username, date);
         response.setHeader("Authorization", token);
         response.getWriter().write(JsonMapper.defaultMapper().toJson(ResponseBean.warn(StatusCode.C200)));
     }

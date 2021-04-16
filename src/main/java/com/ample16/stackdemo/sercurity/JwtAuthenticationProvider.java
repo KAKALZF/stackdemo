@@ -43,6 +43,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         }
         String encryptSalt = user.getPassword();
         try {
+            /**
+             * 根据用户的唯一标记(用户名或clientId),获取到用户信息(主要是密码和相关权限这些),用这些参数生成一个Jwt校验器,
+             * 和用户传过来的token作对比,唯一标记和用户信息(密码,或者约定的一个秘钥值)要对应上
+             */
             Algorithm algorithm = Algorithm.HMAC256(encryptSalt);
             JWTVerifier verifier = JWT.require(algorithm)
                     .withSubject(username)
