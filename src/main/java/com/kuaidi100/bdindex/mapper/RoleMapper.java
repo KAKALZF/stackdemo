@@ -17,5 +17,9 @@ public interface RoleMapper {
 
     List<RoleDo> findByIds(@Param("roleIds") List<Long> roleIds);
 
+    int deleteById(@Param("id")Long id);
+
+    RoleDo findByName(@Param("name")String name);
+
 
 }

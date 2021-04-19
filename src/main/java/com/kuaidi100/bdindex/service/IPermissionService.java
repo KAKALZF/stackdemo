@@ -1,5 +1,6 @@
 package com.kuaidi100.bdindex.service;
 
+import com.kuaidi100.bdindex.pojo.dto.PermissionDo;
 import com.kuaidi100.bdindex.pojo.req.PermissionAddOrUpdateReq;
 
 /**
@@ -13,5 +14,7 @@ public interface IPermissionService {
 
     void delete(Long permissionId);
 
-    void findByPermissionId(Long permissionId);
+    PermissionDo findByPermissionId(Long permissionId);
+
+    void loadAllPermissions();
 }

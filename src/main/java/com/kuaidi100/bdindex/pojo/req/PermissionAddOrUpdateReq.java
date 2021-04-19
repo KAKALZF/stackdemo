@@ -10,7 +10,21 @@ import lombok.Data;
 @Data
 public class PermissionAddOrUpdateReq {
     private Long id;
+    /**
+     * 英文名称
+     */
     private String name;
+    /**
+     * 权限类型
+     */
     private Integer type;
+    /**
+     * 描述
+     */
+    private String desc;
+    /**
+     * 中文名称
+     */
+    private String zhName;
 
 }

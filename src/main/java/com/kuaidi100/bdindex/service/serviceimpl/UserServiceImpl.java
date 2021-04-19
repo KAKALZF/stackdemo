@@ -5,6 +5,7 @@ import com.kuaidi100.bdindex.pojo.dto.*;
 import com.kuaidi100.bdindex.pojo.req.UserAddOrUpdateReq;
 import com.kuaidi100.bdindex.pojo.resp.UserInfoVo;
 import com.kuaidi100.bdindex.service.IUserService;
+import com.kuaidi100.exception.BusinessException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +87,9 @@ public class UserServiceImpl implements IUserService {
         userInfoVo.setAuthInfos(authInfos);
         userInfoVo.setRoleInfos(roleInfos);
         UserDo userDo = userMapper.findByClientId(clientId);
+        if (Objects.isNull(userDo)) {
+            throw new BusinessException("用户不存在");
+        }
         Long userDoId = userDo.getId();
         List<UserRoleDo> userRoles = userRoleMapper.findAllByUserId(userDoId);
         if (CollectionUtils.isEmpty(userRoles)) {
@@ -119,5 +123,43 @@ public class UserServiceImpl implements IUserService {
             authInfo.setType(permissionDo.getType());
         }
         return userInfoVo;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void createAdminUser() {
+        Long clientId = 178812931L;
+        UserDo user = userMapper.findByClientId(clientId);
+        if (Objects.isNull(user)) {
+            //新增一个用户
+            UserDo userDo = new UserDo();
+            userDo.setClientId(clientId);
+            userDo.setStatus(1);
+            userDo.setUpdateTime(new Date());
+            userDo.setCreateTime(new Date());
+            userDo.setUsername("");
+            userMapper.add(userDo);
+            Long userId = userDo.getId();
+            //新增一个角色
+            RoleDo admin = roleMapper.findByName("ADMIN");
+            Long roleId = 0L;
+            if (Objects.isNull(admin)) {
+                RoleDo roleDo = new RoleDo();
+                roleDo.setName("ADMIN");
+                roleDo.setCreateTime(new Date());
+                roleDo.setUpdateTime(new Date());
+                roleDo.setDesc("超级管理员");
+                roleDo.setStatus(1);
+                roleMapper.add(roleDo);
+                roleId = roleDo.getId();
+            }
+            //关联用户和角色
+            UserRoleDo userRoleDo = new UserRoleDo();
+            userRoleDo.setCreateTime(new Date());
+            userRoleDo.setRoleId(roleId);
+            userRoleDo.setUserId(userId);
+            userRoleMapper.insertSelective(userRoleDo);
+        }
+
     }
 }

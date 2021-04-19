@@ -23,9 +23,12 @@ public class CookieUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //如果用户拥有管理员角色,则加载所有权限
         //根据接收到的用户名来查找用户信息
+//        username = "178812931";
         username = "9527";
         ArrayList<String> authorities = new ArrayList<String>();
+        authorities.add("module|routeInfo");
         authorities.add("fieldDataAuth|route|com");
         authorities.add("fieldDataAuth|route|route");
         authorities.add("fieldDataAuth|route|expendTime");

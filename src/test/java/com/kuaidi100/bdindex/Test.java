@@ -77,7 +77,9 @@ public class Test {
     @org.junit.Test
     public void test3() {
 //        Long cilentId = TokenUtils.getInst().parseToken("a63EcxDsxyMxgR67eiJtavxqZ7am6lAepd49JwEujzA");
-        Long cilentId = TokenUtils.getInst().parseToken("1231");
-        System.out.println(cilentId);
+//        Long cilentId = TokenUtils.getInst().parseToken("1231");
+        System.out.println(TokenUtils.getInst().buildToken(10));
+        System.out.println(TokenUtils.getInst().parseToken("x6jR2wfCcb6PppYoLhw9xVR14DKkZmWkJ0ssOnmBQK8"));
+//        System.out.println(cilentId);
     }
 }

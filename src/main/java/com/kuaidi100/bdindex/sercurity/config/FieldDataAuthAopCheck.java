@@ -21,7 +21,7 @@ public class FieldDataAuthAopCheck {
     /**
      * 指定方法和标签
      */
-    @Pointcut("@annotation(com.kuaidi100.bdindex.sercurity.config.FieldAuthCheck)")
+    @Pointcut("@annotation(com.kuaidi100.bdindex.sercurity.config.AuthPermit)")
     public void annotation() {
         System.out.println("annotation()");
     }
@@ -63,7 +63,7 @@ public class FieldDataAuthAopCheck {
             Field[] declaredFields = obj.getClass().getDeclaredFields();
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
-                FieldAuthCheck annotation = declaredField.getAnnotation(FieldAuthCheck.class);
+                AuthPermit annotation = declaredField.getAnnotation(AuthPermit.class);
                 if (Objects.nonNull(annotation)) {
                     String s = annotation.authName();
                     if (!authorities.contains(s)) {

@@ -20,4 +20,6 @@ public interface IUserService {
 
 
     UserInfoVo getUserInfo(Long clientId);
+
+    void createAdminUser();
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.security.RolesAllowed;
 
 @RestController
-public class TestController {
+public class TestController  {
     @Autowired
     private DemoService demoService;
 

@@ -2,12 +2,11 @@ package com.kuaidi100.bdindex.controller;
 
 import com.kuaidi100.bdindex.pojo.ResponseBean;
 import com.kuaidi100.bdindex.pojo.req.PermissionAddOrUpdateReq;
+import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import com.kuaidi100.bdindex.service.serviceimpl.PermissionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zefeng_lin
@@ -21,9 +20,38 @@ public class PermissionController {
     @Autowired
     PermissionServiceImpl permissionService;
 
-    @PostMapping("/addOrUpdate")
-    public ResponseBean addOrUpdate(@RequestBody PermissionAddOrUpdateReq permissionAddOrUpdateReq) {
+ /*   @PostMapping("/add")
+    @PreAuthorize("hasAnyAuthority('opt|permission|add')")
+    @AuthPermit(authName = "opt|permission|add")
+    public ResponseBean add(@RequestBody PermissionAddOrUpdateReq permissionAddOrUpdateReq) {
+        permissionService.addOrUpdate(permissionAddOrUpdateReq);
+        return ResponseBean.success();
+    }*/
+
+    @PostMapping("/udpate")
+    @PreAuthorize("hasAnyAuthority('opt|permission|udpate')")
+    @AuthPermit(authName = "opt|permission|udpate", zhName = "权限更新")
+    public ResponseBean update(@RequestBody PermissionAddOrUpdateReq permissionAddOrUpdateReq) {
         permissionService.addOrUpdate(permissionAddOrUpdateReq);
         return ResponseBean.success();
     }
+
+
+    @GetMapping("/load")
+    @PreAuthorize("hasAnyAuthority('opt|permission|load')")
+    @AuthPermit(authName = "opt|permission|load", zhName = "权限价值")
+    public ResponseBean load() {
+        permissionService.loadAllPermissions();
+        return ResponseBean.success();
+    }
+
+
+    @PostMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('opt|permission|delete')")
+    @AuthPermit(authName = "opt|permission|delete", zhName = "权限删除")
+    public ResponseBean delete(@RequestParam("id") Long id) {
+        permissionService.delete(id);
+        return ResponseBean.success();
+    }
+
 }

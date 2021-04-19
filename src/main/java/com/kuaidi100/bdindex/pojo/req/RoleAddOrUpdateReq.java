@@ -13,5 +13,6 @@ import java.util.List;
 public class RoleAddOrUpdateReq {
     private Long id;
     private String name;
+    private String desc;
     private List<Long> permissionIds;
 }

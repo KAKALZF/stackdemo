@@ -1,6 +1,6 @@
 package com.kuaidi100.bdindex.pojo.resp;
 
-import com.kuaidi100.bdindex.sercurity.config.FieldAuthCheck;
+import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import lombok.Data;
 
 /**
@@ -12,15 +12,15 @@ import lombok.Data;
 public class AreaDataStrVo implements DataStrVo {
     private String com;
     private String route;
-    @FieldAuthCheck(authName = "fieldDataAuth|area|type")
+    @AuthPermit(authName = "fieldDataAuth|area|type", zhName = "地区数据|类型")
     private String type;
-    @FieldAuthCheck(authName = "fieldDataAuth|area|startTime")
+    @AuthPermit(authName = "fieldDataAuth|area|startTime", zhName = "地区数据|开始时间")
     private String startTime;
-    @FieldAuthCheck(authName = "fieldDataAuth|area|expendTime")
+    @AuthPermit(authName = "fieldDataAuth|area|expendTime",zhName = "地区数据|耗时")
     private String expendTime;
-    @FieldAuthCheck(authName = "fieldDataAuth|area|signRate")
+    @AuthPermit(authName = "fieldDataAuth|area|signRate")
     private String signRate;
-    @FieldAuthCheck(authName = "fieldDataAuth|area|returnRate")
+    @AuthPermit(authName = "fieldDataAuth|area|returnRate")
     private String returnRate;
     private String isPickUp;
     private String isDeliver;

@@ -69,12 +69,15 @@ public class RoleServiceImpl implements IRoleService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Long roleId) {
-
+        roleMapper.deleteById(roleId);
+        //todo 删除用户角色相关,角色和权限相关
     }
 
     @Override
-    public void findByRoleId(Long roleId) {
-
+    public RoleDo findByRoleId(Long roleId) {
+        RoleDo roleDo = roleMapper.findById(roleId);
+        return roleDo;
     }
 }

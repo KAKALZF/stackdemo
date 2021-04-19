@@ -38,7 +38,9 @@ import org.springframework.web.filter.CorsFilter;
  * -->认证错误交由HttpStatusLoginFailureHandler处理(返回异常),正确则交由JsonLoginSuccessHandler处理(设置用户加密信息到响应头,下次带上相关信息便于验证)
  * <p>
  * 验权流程:
- * JwtAuthenticationFilter过滤器,
+ * JwtAuthenticationFilter过滤器
+ *
+ * http://localhost:8090/swagger-ui.html#/
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -47,9 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/image/**").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/article/**").hasRole("USER")
+                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+                        "/swagger-resources", "/swagger-resources/configuration/security",
+                        "/swagger-ui.html", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -66,11 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 new Header("Access-Control-Expose-Headers", "Authorization"))))
                 .and()
                 .addFilterAfter(new OptionsRequestFilter(), CorsFilter.class)
-                .apply(new JsonLoginConfigurer<>()).loginSuccessHandler(jsonLoginSuccessHandler())
-                .and()
-                //jwt,token处理
-                .apply(new JwtLoginConfigurer<>()).tokenValidSuccessHandler(jwtRefreshSuccessHandler()).permissiveRequestUrls("/logout")
-                .and()
+//                .apply(new JsonLoginConfigurer<>()).loginSuccessHandler(jsonLoginSuccessHandler())
+//                .and()
+//                //jwt,token处理
+//                .apply(new JwtLoginConfigurer<>()).tokenValidSuccessHandler(jwtRefreshSuccessHandler()).permissiveRequestUrls("/logout")
+//                .and()
                 .apply(new CookieLoginConfigurer<>())
                 .and()
                 .logout()

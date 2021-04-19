@@ -23,7 +23,6 @@ public class UserDo implements Serializable {
     private Date updateTime;
 
     private Integer status;
-
 //    private List<RoleDo> roleDos;
 
 }

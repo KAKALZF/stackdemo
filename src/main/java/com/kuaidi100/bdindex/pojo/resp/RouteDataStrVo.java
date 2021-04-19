@@ -1,6 +1,6 @@
 package com.kuaidi100.bdindex.pojo.resp;
 
-import com.kuaidi100.bdindex.sercurity.config.FieldAuthCheck;
+import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import lombok.Data;
 
 /**
@@ -12,19 +12,19 @@ import lombok.Data;
 public class RouteDataStrVo implements DataStrVo {
     private String com;
     private String route;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|type")
+    @AuthPermit(authName = "fieldDataAuth|route|type")
     private String type;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|count")
+    @AuthPermit(authName = "fieldDataAuth|route|count")
     private String count;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|startTime")
+    @AuthPermit(authName = "fieldDataAuth|route|startTime")
     private String startTime;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|expendTime")
+    @AuthPermit(authName = "fieldDataAuth|route|expendTime")
     private String expendTime;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|transportCount")
+    @AuthPermit(authName = "fieldDataAuth|route|transportCount")
     private String transportCount;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|signRate")
+    @AuthPermit(authName = "fieldDataAuth|route|signRate")
     private String signRate;
-    @FieldAuthCheck(authName = "fieldDataAuth|route|returnRate")
+    @AuthPermit(authName = "fieldDataAuth|route|returnRate")
     private String returnRate;
 
 

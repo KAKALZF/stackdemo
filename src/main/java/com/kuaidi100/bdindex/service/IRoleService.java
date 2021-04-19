@@ -1,5 +1,6 @@
 package com.kuaidi100.bdindex.service;
 
+import com.kuaidi100.bdindex.pojo.dto.RoleDo;
 import com.kuaidi100.bdindex.pojo.req.RoleAddOrUpdateReq;
 
 /**
@@ -12,5 +13,5 @@ public interface IRoleService {
 
     void delete(Long roleId);
 
-    void findByRoleId(Long roleId);
+    RoleDo findByRoleId(Long roleId);
 }

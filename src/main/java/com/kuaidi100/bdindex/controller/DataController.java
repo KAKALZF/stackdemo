@@ -5,8 +5,11 @@ import com.kuaidi100.bdindex.pojo.req.AreaDataQueryReq;
 import com.kuaidi100.bdindex.pojo.req.RouteDataQueryReq;
 import com.kuaidi100.bdindex.pojo.resp.AreaDataStrVo;
 import com.kuaidi100.bdindex.pojo.resp.RouteDataStrVo;
+import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import com.kuaidi100.bdindex.service.serviceimpl.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,21 +22,24 @@ import java.util.List;
  * @description
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/dataModule")
 public class DataController {
     @Autowired
     DataService dataService;
 
-    @RequestMapping("/routeInfo")
-//    @Secured("ROLE_ADMIN")
+    @PostMapping("/routeInfo")
+    @PreAuthorize("hasAnyAuthority('module|routeInfo')")
+    @AuthPermit(authName = "module|routeInfo", zhName = "线路信息模块")
     public ResponseBean routeInfo(@RequestBody RouteDataQueryReq routeDataQueryReq) {
         List<RouteDataStrVo> routeData = dataService.getRouteData(routeDataQueryReq);
         return ResponseBean.success().setData(routeData);
     }
 
 
-    @RequestMapping("/areaInfo")
-//    @Secured("ROLE_ADMIN")
+    @PostMapping("/areaInfo")
+    //@Secured("ROLE_ADMIN")
+    @PreAuthorize("hasAnyAuthority('module|areaInfo')")
+    @AuthPermit(authName = "module|areaInfo", zhName = "地区信息模块")
     public ResponseBean areaInfo(@RequestBody AreaDataQueryReq areaDataQueryReq) {
         List<AreaDataStrVo> routeData = dataService.getAreaData(areaDataQueryReq);
         return ResponseBean.success().setData(routeData);
