@@ -1,7 +1,9 @@
-package com.kuaidi100.bdindex.sercurity;
+package com.kuaidi100.bdindex.sercurity.provider;
 
 import java.util.Calendar;
 
+import com.kuaidi100.bdindex.sercurity.userservice.JwtUserService;
+import com.kuaidi100.bdindex.sercurity.token.JwtAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;

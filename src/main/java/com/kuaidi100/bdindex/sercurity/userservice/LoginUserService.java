@@ -1,4 +1,4 @@
-package com.kuaidi100.bdindex.sercurity;
+package com.kuaidi100.bdindex.sercurity.userservice;
 
 
 import org.springframework.security.core.userdetails.User;

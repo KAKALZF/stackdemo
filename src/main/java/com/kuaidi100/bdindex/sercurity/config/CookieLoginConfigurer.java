@@ -1,5 +1,6 @@
 package com.kuaidi100.bdindex.sercurity.config;
 
+import com.kuaidi100.bdindex.sercurity.filter.CookieAuthenticationFilter;
 import com.kuaidi100.bdindex.sercurity.filter.JwtAuthenticationFilter;
 import com.kuaidi100.bdindex.sercurity.handler.HttpStatusLoginFailureHandler;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,28 +9,28 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
-public class JwtLoginConfigurer<T extends JwtLoginConfigurer<T, B>, B extends HttpSecurityBuilder<B>> extends AbstractHttpConfigurer<T, B> {
+public class CookieLoginConfigurer<T extends CookieLoginConfigurer<T, B>, B extends HttpSecurityBuilder<B>> extends AbstractHttpConfigurer<T, B> {
 
-    private JwtAuthenticationFilter authFilter;
+    private CookieAuthenticationFilter authFilter;
 
-    public JwtLoginConfigurer() {
-        this.authFilter = new JwtAuthenticationFilter();
+    public CookieLoginConfigurer() {
+        this.authFilter = new CookieAuthenticationFilter();
     }
 
     @Override
     public void configure(B http) throws Exception {
         authFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         authFilter.setAuthenticationFailureHandler(new HttpStatusLoginFailureHandler());
-        JwtAuthenticationFilter filter = postProcess(authFilter);
+        CookieAuthenticationFilter filter = postProcess(authFilter);
         http.addFilterBefore(filter, LogoutFilter.class);
     }
 
-    public JwtLoginConfigurer<T, B> permissiveRequestUrls(String... urls) {
+    public CookieLoginConfigurer<T, B> permissiveRequestUrls(String... urls) {
         authFilter.setPermissiveUrl(urls);
         return this;
     }
 
-    public JwtLoginConfigurer<T, B> tokenValidSuccessHandler(AuthenticationSuccessHandler successHandler) {
+    public CookieLoginConfigurer<T, B> tokenValidSuccessHandler(AuthenticationSuccessHandler successHandler) {
         authFilter.setAuthenticationSuccessHandler(successHandler);
         return this;
     }

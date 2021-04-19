@@ -1,15 +1,9 @@
 package com.kuaidi100.bdindex.sercurity.filter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.kuaidi100.bdindex.sercurity.token.JwtAuthenticationToken;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.kuaidi100.bdindex.sercurity.handler.CookieAuthentiocationSuccessHandler;
+import com.kuaidi100.bdindex.sercurity.token.CookieAuthenticationToken;
+import com.kuaidi100.bdindex.util.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -22,30 +16,33 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  */
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class CookieAuthenticationFilter extends OncePerRequestFilter {
 
     private RequestMatcher requiresAuthenticationRequestMatcher;
     private List<RequestMatcher> permissiveRequestMatchers;
     private AuthenticationManager authenticationManager;
 
 
-    private AuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+    private AuthenticationSuccessHandler successHandler = new CookieAuthentiocationSuccessHandler();
     private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
-    public JwtAuthenticationFilter() {
-        this.requiresAuthenticationRequestMatcher = new RequestHeaderRequestMatcher("Authorization");
-//        this.requiresAuthenticationRequestMatcher = new RequestCookieRequestMatcher("TOKEN");
+    public CookieAuthenticationFilter() {
+        this.requiresAuthenticationRequestMatcher = new RequestCookieRequestMatcher("TOKEN");
     }
 
     @Override
@@ -53,11 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Assert.notNull(authenticationManager, "authenticationManager must be specified");
         Assert.notNull(successHandler, "AuthenticationSuccessHandler must be specified");
         Assert.notNull(failureHandler, "AuthenticationFailureHandler must be specified");
-    }
-
-    protected String getJwtToken(HttpServletRequest request) {
-        String authInfo = request.getHeader("Authorization");
-        return StringUtils.removeStart(authInfo, "Bearer ");
     }
 
     @Override
@@ -75,19 +67,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         AuthenticationException failed = null;
         try {
             //从头中获取token并封装后提交给AuthenticationManager认证
-            String token = getJwtToken(request);
+            String token = CommonUtil.getCookieToken(request);
             if (StringUtils.isNotBlank(token)) {
-                JwtAuthenticationToken authToken = new JwtAuthenticationToken(JWT.decode(token));
+                CookieAuthenticationToken authToken = new CookieAuthenticationToken(token);
                 authResult = this.getAuthenticationManager().authenticate(authToken);
             } else {
-                failed = new InsufficientAuthenticationException("JWT不能为空");
+                failed = new InsufficientAuthenticationException("Token不能为空");
             }
         } catch (JWTDecodeException e) {
-            logger.error("JWT格式错误", e);
-            failed = new InsufficientAuthenticationException("JWT格式错误", failed);
+            logger.error("token验证异常", e);
+            failed = new InsufficientAuthenticationException("token验证异常", failed);
         } catch (InternalAuthenticationServiceException e) {
             logger.error(
-                    "内部认证异常",
+                    "token验证异常",
                     failed);
             failed = e;
         } catch (AuthenticationException e) {

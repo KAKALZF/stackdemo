@@ -1,7 +1,8 @@
-package com.kuaidi100.bdindex.sercurity;
+package com.kuaidi100.bdindex.sercurity.handler;
 
 import com.kuaidi100.bdindex.pojo.ResponseBean;
 import com.kuaidi100.bdindex.pojo.StatusCode;
+import com.kuaidi100.bdindex.sercurity.userservice.LoginUserService;
 import com.kuaidi100.bdindex.util.JsonMapper;
 import com.kuaidi100.bdindex.util.JwtTokenUtil;
 import org.springframework.security.core.Authentication;

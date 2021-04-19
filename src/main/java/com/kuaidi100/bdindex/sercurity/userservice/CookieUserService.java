@@ -1,9 +1,8 @@
-package com.kuaidi100.bdindex.sercurity;
+package com.kuaidi100.bdindex.sercurity.userservice;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,32 +11,15 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import java.util.ArrayList;
+import java.util.Date;
 
-public class JwtUserService implements UserDetailsService {
+public class CookieUserService implements UserDetailsService {
 
 
-    public JwtUserService() {
+    public CookieUserService() {
     }
 
-    public UserDetails getUserLoginInfo(String username) {
-        UserDetails user = loadUserByUsername(username);
-        //将salt放到password字段返回
-        return user;
-    }
-
-    public String saveUserLoginInfo(UserDetails user) {
-        System.out.println("saveUserLoginInfo==============");
-        String salt = "bdzs@9527"; //BCrypt.gensalt();  正式开发时可以调用该方法实时生成加密的salt
-        Algorithm algorithm = Algorithm.HMAC256(salt);
-        Date date = new Date(System.currentTimeMillis() + 3600 * 1000);  //设置1小时后过期
-        return JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(date)
-                .withIssuedAt(new Date())
-                .sign(algorithm);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -46,9 +28,6 @@ public class JwtUserService implements UserDetailsService {
         ArrayList<String> authorities = new ArrayList<String>();
         authorities.add("fieldDataAuth|route|com");
         authorities.add("fieldDataAuth|route|route");
-//        authorities.add("fieldDataAuth|route|type");
-//        authorities.add("fieldDataAuth|route|count");
-//        authorities.add("fieldDataAuth|route|startTime");
         authorities.add("fieldDataAuth|route|expendTime");
         authorities.add("fieldDataAuth|route|transportCount");
         authorities.add("fieldDataAuth|route|signRate");
@@ -72,7 +51,4 @@ public class JwtUserService implements UserDetailsService {
         System.out.println(BCrypt.gensalt());
     }
 
-    public void deleteUserLoginInfo(String username) {
-        System.out.println("==========deleteUserLoginInfo");
-    }
 }

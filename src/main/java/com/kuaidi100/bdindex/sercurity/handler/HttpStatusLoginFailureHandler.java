@@ -1,4 +1,4 @@
-package com.kuaidi100.bdindex.sercurity.config;
+package com.kuaidi100.bdindex.sercurity.handler;
 
 import com.kuaidi100.bdindex.pojo.ResponseBean;
 import com.kuaidi100.bdindex.pojo.StatusCode;

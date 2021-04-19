@@ -1,9 +1,9 @@
-package com.kuaidi100.bdindex.sercurity.config;
+package com.kuaidi100.bdindex.sercurity.handler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kuaidi100.bdindex.sercurity.JwtUserService;
+import com.kuaidi100.bdindex.sercurity.userservice.JwtUserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.LogoutHandler;

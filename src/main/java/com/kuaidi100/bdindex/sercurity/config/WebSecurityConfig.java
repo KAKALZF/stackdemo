@@ -2,9 +2,16 @@ package com.kuaidi100.bdindex.sercurity.config;
 
 import java.util.Arrays;
 
-import com.kuaidi100.bdindex.sercurity.*;
 import com.kuaidi100.bdindex.sercurity.exception.AccessDeniedAuthenticationHandler;
 import com.kuaidi100.bdindex.sercurity.filter.OptionsRequestFilter;
+import com.kuaidi100.bdindex.sercurity.handler.JsonLoginSuccessHandler;
+import com.kuaidi100.bdindex.sercurity.handler.JwtRefreshSuccessHandler;
+import com.kuaidi100.bdindex.sercurity.handler.TokenClearLogoutHandler;
+import com.kuaidi100.bdindex.sercurity.provider.CookieAuthenticationProvider;
+import com.kuaidi100.bdindex.sercurity.provider.JwtAuthenticationProvider;
+import com.kuaidi100.bdindex.sercurity.userservice.CookieUserService;
+import com.kuaidi100.bdindex.sercurity.userservice.JwtUserService;
+import com.kuaidi100.bdindex.sercurity.userservice.LoginUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -64,6 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //jwt,token处理
                 .apply(new JwtLoginConfigurer<>()).tokenValidSuccessHandler(jwtRefreshSuccessHandler()).permissiveRequestUrls("/logout")
                 .and()
+                .apply(new CookieLoginConfigurer<>())
+                .and()
                 .logout()
                 //默认就是"/logout"
                 //.logoutUrl("/logout")
@@ -77,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //两种认证方式
         auth.authenticationProvider(daoAuthenticationProvider())
+                .authenticationProvider(cookieAuthenticationProvider())
                 .authenticationProvider(jwtAuthenticationProvider());
     }
 
@@ -143,5 +153,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AccessDeniedAuthenticationHandler();
     }
 
+    protected CookieAuthenticationProvider cookieAuthenticationProvider() {
+        return new CookieAuthenticationProvider(new CookieUserService());
+    }
 
 }

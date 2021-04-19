@@ -1,6 +1,6 @@
 package com.kuaidi100.bdindex;
 
-import com.kuaidi100.bdindex.sercurity.JwtAuthenticationToken;
+import com.kuaidi100.bdindex.sercurity.token.JwtAuthenticationToken;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -76,7 +76,8 @@ public class Test {
 
     @org.junit.Test
     public void test3() {
-        Long cilentId = TokenUtils.getInst().parseToken("a63EcxDsxyMxgR67eiJtavxqZ7am6lAepd49JwEujzA");
+//        Long cilentId = TokenUtils.getInst().parseToken("a63EcxDsxyMxgR67eiJtavxqZ7am6lAepd49JwEujzA");
+        Long cilentId = TokenUtils.getInst().parseToken("1231");
         System.out.println(cilentId);
     }
 }

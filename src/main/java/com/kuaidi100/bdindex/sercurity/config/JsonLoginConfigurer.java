@@ -1,6 +1,7 @@
 package com.kuaidi100.bdindex.sercurity.config;
 
 import com.kuaidi100.bdindex.sercurity.filter.MyUsernamePasswordAuthenticationFilter;
+import com.kuaidi100.bdindex.sercurity.handler.HttpStatusLoginFailureHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
