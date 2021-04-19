@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.kuaidi100.sso.pojo.TokenUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -75,5 +76,7 @@ public class Test {
 
     @org.junit.Test
     public void test3() {
+        Long cilentId = TokenUtils.getInst().parseToken("a63EcxDsxyMxgR67eiJtavxqZ7am6lAepd49JwEujzA");
+        System.out.println(cilentId);
     }
 }

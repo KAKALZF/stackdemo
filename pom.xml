@@ -75,15 +75,15 @@
             <artifactId>java-jwt</artifactId>
             <version>3.4.0</version>
         </dependency>
-   <!--     <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
+        <!--     <dependency>
+                 <groupId>org.springframework.session</groupId>
+                 <artifactId>spring-session-data-redis</artifactId>
+             </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>-->
+             <dependency>
+                 <groupId>org.springframework.boot</groupId>
+                 <artifactId>spring-boot-starter-data-redis</artifactId>
+             </dependency>-->
         <!--commonutil-->
         <dependency>
             <groupId>com.kuaidi100</groupId>
@@ -125,8 +125,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!--sso-->
+        <dependency>
+            <groupId>com.kuaidi100</groupId>
+            <artifactId>sso.pojo</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-
 
 
     <dependencyManagement>
