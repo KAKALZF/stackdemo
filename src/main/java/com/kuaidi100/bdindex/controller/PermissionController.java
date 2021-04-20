@@ -30,7 +30,7 @@ public class PermissionController {
 
     @PostMapping("/udpate")
     @PreAuthorize("hasAnyAuthority('opt|permission|udpate')")
-    @AuthPermit(authName = "opt|permission|udpate", zhName = "权限更新")
+    @AuthPermit(authName = "opt|permission|udpate", zhName = "权限|更新")
     public ResponseBean update(@RequestBody PermissionAddOrUpdateReq permissionAddOrUpdateReq) {
         permissionService.addOrUpdate(permissionAddOrUpdateReq);
         return ResponseBean.success();
@@ -39,7 +39,7 @@ public class PermissionController {
 
     @GetMapping("/load")
     @PreAuthorize("hasAnyAuthority('opt|permission|load')")
-    @AuthPermit(authName = "opt|permission|load", zhName = "权限价值")
+    @AuthPermit(authName = "opt|permission|load", zhName = "权限|重载")
     public ResponseBean load() {
         permissionService.loadAllPermissions();
         return ResponseBean.success();
@@ -48,7 +48,7 @@ public class PermissionController {
 
     @PostMapping("/delete")
     @PreAuthorize("hasAnyAuthority('opt|permission|delete')")
-    @AuthPermit(authName = "opt|permission|delete", zhName = "权限删除")
+    @AuthPermit(authName = "opt|permission|delete", zhName = "权限|删除")
     public ResponseBean delete(@RequestParam("id") Long id) {
         permissionService.delete(id);
         return ResponseBean.success();

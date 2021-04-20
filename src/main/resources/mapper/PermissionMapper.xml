@@ -78,19 +78,19 @@
         update T_BDZS_PERMISSION
         <set>
             <if test="name!=null and name!=''">
-                FNAME=#{name}
+                FNAME=#{name},
             </if>
             <if test="updateTime!=null">
-                FUPDATE_TIME=#{updateTime}
+                FUPDATE_TIME=#{updateTime},
             </if>
             <if test="type!=null">
-                FTYPE=#{type}
+                FTYPE=#{type},
             </if>
             <if test="zhName != null and zhName != ''">
-                Fzh_Name=#{zhName}
+                Fzh_Name=#{zhName},
             </if>
             <if test="desc != null and desc != ''">
-                Fdesc=#{desc}
+                Fdesc=#{desc},
             </if>
         </set>
         where FID=#{id}

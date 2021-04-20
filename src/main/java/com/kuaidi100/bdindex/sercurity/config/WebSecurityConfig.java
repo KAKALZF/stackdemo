@@ -12,6 +12,7 @@ import com.kuaidi100.bdindex.sercurity.provider.JwtAuthenticationProvider;
 import com.kuaidi100.bdindex.sercurity.userservice.CookieUserService;
 import com.kuaidi100.bdindex.sercurity.userservice.JwtUserService;
 import com.kuaidi100.bdindex.sercurity.userservice.LoginUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -30,6 +31,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.servlet.http.Cookie;
+
 /**
  * 登录流程:
  * 用户提交登录数据-->MyUsernamePasswordAuthenticationFilter拦截用户提价的信息,封装为UsernamePasswordAuthenticationToken,
@@ -39,12 +42,14 @@ import org.springframework.web.filter.CorsFilter;
  * <p>
  * 验权流程:
  * JwtAuthenticationFilter过滤器
- *
+ * <p>
  * http://localhost:8090/swagger-ui.html#/
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    CookieAuthenticationProvider cookieAuthenticationProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -88,7 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //两种认证方式
         auth.authenticationProvider(daoAuthenticationProvider())
-                .authenticationProvider(cookieAuthenticationProvider())
+                .authenticationProvider(cookieAuthenticationProvider)
                 .authenticationProvider(jwtAuthenticationProvider());
     }
 
@@ -155,8 +160,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AccessDeniedAuthenticationHandler();
     }
 
-    protected CookieAuthenticationProvider cookieAuthenticationProvider() {
-        return new CookieAuthenticationProvider(new CookieUserService());
-    }
 
 }

@@ -8,6 +8,7 @@ import com.kuaidi100.bdindex.service.IUserService;
 import com.kuaidi100.exception.BusinessException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -88,7 +89,7 @@ public class UserServiceImpl implements IUserService {
         userInfoVo.setRoleInfos(roleInfos);
         UserDo userDo = userMapper.findByClientId(clientId);
         if (Objects.isNull(userDo)) {
-            throw new BusinessException("用户不存在");
+            throw new AuthenticationCredentialsNotFoundException("用户不存在");
         }
         Long userDoId = userDo.getId();
         List<UserRoleDo> userRoles = userRoleMapper.findAllByUserId(userDoId);
@@ -161,5 +162,11 @@ public class UserServiceImpl implements IUserService {
             userRoleMapper.insertSelective(userRoleDo);
         }
 
+    }
+
+    @Override
+    public UserDo findByClientId(Long clientId) {
+        UserDo userDo = userMapper.findByClientId(clientId);
+        return userDo;
     }
 }

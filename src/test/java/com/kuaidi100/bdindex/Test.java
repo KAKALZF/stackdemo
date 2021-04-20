@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -78,8 +79,13 @@ public class Test {
     public void test3() {
 //        Long cilentId = TokenUtils.getInst().parseToken("a63EcxDsxyMxgR67eiJtavxqZ7am6lAepd49JwEujzA");
 //        Long cilentId = TokenUtils.getInst().parseToken("1231");
-        System.out.println(TokenUtils.getInst().buildToken(10));
+        System.out.println(TokenUtils.getInst().buildToken(178812931));
         System.out.println(TokenUtils.getInst().parseToken("x6jR2wfCcb6PppYoLhw9xVR14DKkZmWkJ0ssOnmBQK8"));
 //        System.out.println(cilentId);
+        ArrayList<String> list = new ArrayList<String>();
+        User.builder().username("123").password("bdzs@" + "123")
+                .roles(list.toArray(new String[list.size()]))
+                .authorities(list.toArray(new String[list.size()]))
+                .build();
     }
 }

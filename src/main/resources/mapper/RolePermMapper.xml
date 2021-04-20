@@ -74,7 +74,7 @@
         select
         <include refid="Base_Column_List"/>
         from T_BDZS_ROLE_PERM
-        where FID in
+        where FROLE_ID in
         <foreach collection="roleIds " item="roleId" separator="," open="(" close=")">
             #{roleId}
         </foreach>

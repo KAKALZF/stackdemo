@@ -1,8 +1,10 @@
 package com.kuaidi100.bdindex.sercurity.userservice;
 
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.kuaidi100.bdindex.pojo.resp.UserInfoVo;
+import com.kuaidi100.bdindex.service.IUserService;
+import com.kuaidi100.bdindex.util.CommonUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,12 +12,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
+@Service("cookieUserService")
 public class CookieUserService implements UserDetailsService {
 
+    @Autowired
+    IUserService userService;
 
     public CookieUserService() {
     }
@@ -26,19 +32,25 @@ public class CookieUserService implements UserDetailsService {
         //如果用户拥有管理员角色,则加载所有权限
         //根据接收到的用户名来查找用户信息
 //        username = "178812931";
-        username = "9527";
-        ArrayList<String> authorities = new ArrayList<String>();
-        authorities.add("module|routeInfo");
-        authorities.add("fieldDataAuth|route|com");
-        authorities.add("fieldDataAuth|route|route");
-        authorities.add("fieldDataAuth|route|expendTime");
-        authorities.add("fieldDataAuth|route|transportCount");
-        authorities.add("fieldDataAuth|route|signRate");
-        authorities.add("fieldDataAuth|route|returnRate");
-        String[] strings = authorities.toArray(new String[authorities.size()]);
+        UserInfoVo userInfo = userService.getUserInfo(Long.valueOf(username));
+        List<UserInfoVo.RoleInfo> roleInfos = userInfo.getRoleInfos();
+        List<UserInfoVo.AuthInfo> authInfos = userInfo.getAuthInfos();
+        final List<String> roles = new ArrayList<>();
+        List<String> authorities = new ArrayList<>();
+        for (UserInfoVo.RoleInfo roleInfo : roleInfos) {
+            roles.add(roleInfo.getName());
+        }
+        if (roles.contains("ADMIN")) {
+            authorities = CommonUtil.getAllAuthStr();
+        } else {
+            for (UserInfoVo.AuthInfo authInfo : authInfos) {
+                authorities.add(authInfo.getName());
+            }
+        }
+        //密码参数无意义
         return User.builder().username(username).password("bdzs@" + username)
-                .roles("USER", "ADMIN")
-                .authorities(strings)
+                .roles(roles.toArray(new String[roles.size()]))
+                .authorities(authorities.toArray(new String[authorities.size()]))
                 .build();
     }
 

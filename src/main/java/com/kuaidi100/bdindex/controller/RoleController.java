@@ -22,7 +22,7 @@ public class RoleController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('opt|role|add')")
-    @AuthPermit(authName = "opt|role|add", zhName = "角色新增")
+    @AuthPermit(authName = "opt|role|add", zhName = "角色|新增")
     public ResponseBean add(@RequestBody RoleAddOrUpdateReq roleAddOrUpdateReq) {
         roleService.addOrUpdate(roleAddOrUpdateReq);
         return ResponseBean.success();
@@ -30,7 +30,7 @@ public class RoleController {
 
     @PostMapping("/update")
     @PreAuthorize("hasAnyAuthority('opt|role|udpate')")
-    @AuthPermit(authName = "opt|role|udpate", zhName = "角色更新")
+    @AuthPermit(authName = "opt|role|udpate", zhName = "角色|更新")
     public ResponseBean update(@RequestBody RoleAddOrUpdateReq roleAddOrUpdateReq) {
         roleService.addOrUpdate(roleAddOrUpdateReq);
         return ResponseBean.success();
@@ -38,7 +38,7 @@ public class RoleController {
 
     @PostMapping("/delete")
     @PreAuthorize("hasAnyAuthority('opt|role|delete')")
-    @AuthPermit(authName = "opt|role|delete", zhName = "角色删除")
+    @AuthPermit(authName = "opt|role|delete", zhName = "角色|删除")
     public ResponseBean update(@RequestParam("id") Long id) {
         roleService.delete(id);
         return ResponseBean.success();

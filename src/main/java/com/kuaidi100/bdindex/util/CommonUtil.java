@@ -59,4 +59,11 @@ public class CommonUtil {
         }
         return authPermits;
     }
+
+    public static List<String> getAllAuthStr() {
+        List<AuthPermit> allAuth = getAllAuth();
+        ArrayList<String> authorities = new ArrayList<>();
+        allAuth.stream().forEach(authPermit -> authorities.add(authPermit.authName()));
+        return authorities;
+    }
 }

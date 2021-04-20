@@ -7,6 +7,7 @@ import com.kuaidi100.bdindex.pojo.resp.AreaDataResp;
 import com.kuaidi100.bdindex.pojo.resp.AreaDataStrVo;
 import com.kuaidi100.bdindex.pojo.resp.RouteDataStrVo;
 import com.kuaidi100.bdindex.pojo.resp.RouteDataResp;
+import com.kuaidi100.bdindex.sercurity.config.AuthAopCheck;
 import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import com.kuaidi100.bdindex.util.HttpUtil;
 import com.kuaidi100.bdindex.util.JsonMapper;
@@ -25,11 +26,10 @@ import java.util.List;
 @Service("dataService")
 public class DataService {
 
-    @AuthPermit
+    @AuthAopCheck
     public List<RouteDataStrVo> getRouteData(RouteDataQueryReq routeDataQueryReq) {
         String s = JsonMapper.defaultMapper().toJson(routeDataQueryReq);
         String post = HttpUtil.defaultHttp().post("http://timev2.api.kuaidi100.com/timev2/industry/index", s, "application/json");
-        System.out.println("=========" + post);
         APIResponseBean<List<RouteDataResp>> apiResp = JsonMapper.defaultMapper().fromJson(post, new TypeReference<APIResponseBean<List<RouteDataResp>>>() {
         });
         List<RouteDataResp> data = apiResp.getData();
@@ -51,7 +51,7 @@ public class DataService {
     }
 
 
-    @AuthPermit
+    @AuthAopCheck
     public List<AreaDataStrVo> getAreaData(AreaDataQueryReq areaDataQueryReq) {
         String s = JsonMapper.defaultMapper().toJson(areaDataQueryReq);
         String post = HttpUtil.defaultHttp().post("http://timev2.api.kuaidi100.com/timev2/industry/area", s, "application/json");

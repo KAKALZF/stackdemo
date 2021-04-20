@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('opt|user|add')")
-    @AuthPermit(authName = "opt|user|add", zhName = "用户新增")
+    @AuthPermit(authName = "opt|user|add", zhName = "用户|新增")
     public ResponseBean add(@RequestBody UserAddOrUpdateReq userAddOrUpdateReq) {
         userService.addOrUpdate(userAddOrUpdateReq);
         return ResponseBean.success();
@@ -38,7 +38,7 @@ public class UserController {
 
     @PostMapping("/update")
     @PreAuthorize("hasAnyAuthority('opt|user|update')")
-    @AuthPermit(authName = "opt|user|update", zhName = "用户更新")
+    @AuthPermit(authName = "opt|user|update", zhName = "用户|更新")
     public ResponseBean update(@RequestBody UserAddOrUpdateReq userAddOrUpdateReq) {
         userService.addOrUpdate(userAddOrUpdateReq);
         return ResponseBean.success();
@@ -46,14 +46,14 @@ public class UserController {
 
 
     @GetMapping("/getInfo")
-//    @PreAuthorize("hasAnyAuthority('opt|user|getInfo')")
-//    @AuthPermit(authName = "opt|user|getInfo")
+    @PreAuthorize("hasAnyAuthority('opt|user|getInfo')")
+    @AuthPermit(authName = "opt|user|getInfo")
     public ResponseBean getUserInfo(@CookieValue(name = "TOKEN") String token) {
         System.out.println("=========" + token);
         Long clientId = TokenUtils.getInst().parseToken(token);
         UserInfoVo userInfo = userService.getUserInfo(clientId);
         return ResponseBean.success().setData(userInfo);
     }
-
+    
 
 }

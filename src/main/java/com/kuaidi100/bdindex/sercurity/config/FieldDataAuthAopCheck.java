@@ -21,21 +21,19 @@ public class FieldDataAuthAopCheck {
     /**
      * 指定方法和标签
      */
-    @Pointcut("@annotation(com.kuaidi100.bdindex.sercurity.config.AuthPermit)")
+    @Pointcut("@annotation(com.kuaidi100.bdindex.sercurity.config.AuthAopCheck)")
     public void annotation() {
         System.out.println("annotation()");
     }
 
 
     @Around("annotation()")
-    public List<DataStrVo> around(ProceedingJoinPoint pjp) {
-        System.out.println("======aop========");
+    public List<DataStrVo> around(ProceedingJoinPoint pjp) throws Throwable {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         HashSet<String> authoritySet = new HashSet<>();
         for (GrantedAuthority authority : authorities) {
             String authorityStr = authority.getAuthority();
-            System.out.println(authorityStr);
             authoritySet.add(authorityStr);
         }
         List<DataStrVo> dataList = null;
@@ -46,7 +44,7 @@ public class FieldDataAuthAopCheck {
             }
         } catch (Throwable e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw e;
         }
         return dataList;
     }

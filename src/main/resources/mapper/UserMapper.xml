@@ -70,13 +70,13 @@
         update T_BDZS_USER
         <set>
             <if test="username!=null and username!=''">
-                Fusername=#{username}
+                Fusername=#{username},
             </if>
             <if test="updateTime!=null">
-                Fupdate_time=#{updateTime}
+                Fupdate_time=#{updateTime},
             </if>
             <if test="clientId!=null">
-                Fclient_id=#{clientId}
+                Fclient_id=#{clientId},
             </if>
         </set>
         where FID=#{id}

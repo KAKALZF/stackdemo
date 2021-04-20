@@ -80,13 +80,13 @@
         update T_BDZS_ROLE
         <set>
             <if test="name!=null and name!=''">
-                FNAME=#{name}
+                FNAME=#{name},
             </if>
             <if test="desc != null and desc != ''">
-                FDESC=#{desc}
+                FDESC=#{desc},
             </if>
             <if test="updateTime != null">
-                FUPDATE_TIME=#{updateTime}
+                FUPDATE_TIME=#{updateTime},
             </if>
         </set>
         where FID=#{id}

@@ -12,16 +12,26 @@ import lombok.Data;
 public class AreaDataStrVo implements DataStrVo {
     private String com;
     private String route;
-    @AuthPermit(authName = "fieldDataAuth|area|type", zhName = "地区数据|类型")
+    /**
+     * 快递公司类型
+     */
     private String type;
-    @AuthPermit(authName = "fieldDataAuth|area|startTime", zhName = "地区数据|开始时间")
+    /**
+     * 开始时间
+     */
     private String startTime;
-    @AuthPermit(authName = "fieldDataAuth|area|expendTime",zhName = "地区数据|耗时")
+    @AuthPermit(authName = "fieldDataAuth|area|expendTime", zhName = "地区数据|耗时")
     private String expendTime;
-    @AuthPermit(authName = "fieldDataAuth|area|signRate")
+    @AuthPermit(authName = "fieldDataAuth|area|signRate", zhName = "地区数据|妥投率")
     private String signRate;
-    @AuthPermit(authName = "fieldDataAuth|area|returnRate")
+    @AuthPermit(authName = "fieldDataAuth|area|returnRate", zhName = "地区数据|退签率")
     private String returnRate;
+    /**
+     * 是否揽件
+     */
     private String isPickUp;
+    /**
+     * 是手运输
+     */
     private String isDeliver;
 }

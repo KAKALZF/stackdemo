@@ -5,6 +5,7 @@ import com.kuaidi100.bdindex.pojo.StatusCode;
 import com.kuaidi100.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -55,6 +56,13 @@ public class AutoExceptionHandler {
     public ResponseBean handle(ValidationException exception) {
         logger.error(exception.getMessage(), exception);
         return ResponseBean.response().setCode(StatusCode.C_ERROR.getCode()).setMessage(exception.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    public ResponseBean handleAccessException(AccessDeniedException exception) {
+        logger.error(exception.getMessage(), exception);
+        return ResponseBean.warn(StatusCode.C_402);
     }
 
 
