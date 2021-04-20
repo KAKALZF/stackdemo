@@ -1,5 +1,7 @@
 package com.kuaidi100.bdindex.service.serviceimpl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kuaidi100.bdindex.controller.DataController;
 import com.kuaidi100.bdindex.controller.PermissionController;
 import com.kuaidi100.bdindex.controller.RoleController;
@@ -7,6 +9,7 @@ import com.kuaidi100.bdindex.controller.UserController;
 import com.kuaidi100.bdindex.mapper.PermissionMapper;
 import com.kuaidi100.bdindex.pojo.dto.PermissionDo;
 import com.kuaidi100.bdindex.pojo.req.PermissionAddOrUpdateReq;
+import com.kuaidi100.bdindex.pojo.req.PermissionsQueryReq;
 import com.kuaidi100.bdindex.pojo.resp.AreaDataStrVo;
 import com.kuaidi100.bdindex.pojo.resp.RouteDataStrVo;
 import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
@@ -103,6 +106,16 @@ public class PermissionServiceImpl implements IPermissionService {
         if (!CollectionUtils.isEmpty(allId)) {
             permissionMapper.deleteByIds(allId);
         }
+    }
+
+    @Override
+    public PageInfo<PermissionDo> queryList(PermissionsQueryReq permissionsQueryReq) {
+        Integer page = permissionsQueryReq.getPage();
+        Integer size = permissionsQueryReq.getSize();
+        PageHelper.startPage(page,size);
+        List<PermissionDo> permissionDos = permissionMapper.queryList(permissionsQueryReq);
+        PageInfo<PermissionDo> pageInfo = PageInfo.of(permissionDos);
+        return pageInfo;
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.*;
  */
 @Component
 @Aspect
-public class FieldDataAuthAopCheck {
+public class SystemAuthAopCheck {
 
     /**
      * 指定方法和标签
@@ -26,7 +26,17 @@ public class FieldDataAuthAopCheck {
         System.out.println("annotation()");
     }
 
+    @Pointcut("@annotation(com.kuaidi100.bdindex.sercurity.config.AuthPermit)")
+    public void authPermitAnnotation() {
+        System.out.println("authPermitAnnotation()");
+    }
 
+    /**
+     * 字段部分的权限控制
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     @Around("annotation()")
     public List<DataStrVo> around(ProceedingJoinPoint pjp) throws Throwable {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,6 +59,33 @@ public class FieldDataAuthAopCheck {
         return dataList;
     }
 
+ /*   *//**
+     * 字段部分的权限控制
+     * @param pjp
+     * @return
+     * @throws Throwable
+     *//*
+    @Around("authPermitAnnotation()")
+    public List<DataStrVo> around2(ProceedingJoinPoint pjp) throws Throwable {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        HashSet<String> authoritySet = new HashSet<>();
+        for (GrantedAuthority authority : authorities) {
+            String authorityStr = authority.getAuthority();
+            authoritySet.add(authorityStr);
+        }
+        List<DataStrVo> dataList = null;
+        try {
+            dataList = (List<DataStrVo>) pjp.proceed();
+            for (DataStrVo dataStrVo : dataList) {
+                authHandler(authoritySet, dataStrVo);
+            }
+        } catch (Throwable e) {
+            // TODO Auto-generated catch block
+            throw e;
+        }
+        return dataList;
+    }*/
 
     /**
      * 没有权限的数据设置为无权限

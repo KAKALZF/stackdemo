@@ -1,7 +1,5 @@
 package com.kuaidi100.bdindex.sercurity.config;
 
-import java.util.Arrays;
-
 import com.kuaidi100.bdindex.sercurity.exception.AccessDeniedAuthenticationHandler;
 import com.kuaidi100.bdindex.sercurity.filter.OptionsRequestFilter;
 import com.kuaidi100.bdindex.sercurity.handler.JsonLoginSuccessHandler;
@@ -9,7 +7,6 @@ import com.kuaidi100.bdindex.sercurity.handler.JwtRefreshSuccessHandler;
 import com.kuaidi100.bdindex.sercurity.handler.TokenClearLogoutHandler;
 import com.kuaidi100.bdindex.sercurity.provider.CookieAuthenticationProvider;
 import com.kuaidi100.bdindex.sercurity.provider.JwtAuthenticationProvider;
-import com.kuaidi100.bdindex.sercurity.userservice.CookieUserService;
 import com.kuaidi100.bdindex.sercurity.userservice.JwtUserService;
 import com.kuaidi100.bdindex.sercurity.userservice.LoginUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import javax.servlet.http.Cookie;
+import java.util.Arrays;
 
 /**
  * 登录流程:
@@ -54,9 +51,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                //swagger相关
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                         "/swagger-resources", "/swagger-resources/configuration/security",
                         "/swagger-ui.html", "/webjars/**").permitAll()
+                //用户信息等接口设置,不然第一次不带上账号参数会被拒绝
+                .antMatchers("/user/getInfo").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

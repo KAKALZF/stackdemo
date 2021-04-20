@@ -1,12 +1,21 @@
 package com.kuaidi100.bdindex.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.kuaidi100.bdindex.pojo.ResponseBean;
+import com.kuaidi100.bdindex.pojo.dto.PermissionDo;
 import com.kuaidi100.bdindex.pojo.req.PermissionAddOrUpdateReq;
+import com.kuaidi100.bdindex.pojo.req.PermissionsQueryReq;
+import com.kuaidi100.bdindex.pojo.resp.PermissionVo;
 import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import com.kuaidi100.bdindex.service.serviceimpl.PermissionServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author zefeng_lin
@@ -54,4 +63,23 @@ public class PermissionController {
         return ResponseBean.success();
     }
 
+
+    @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('opt|permission|list')")
+    @AuthPermit(authName = "opt|permission|list", zhName = "权限|列表")
+    public ResponseBean<HashMap<String, Object>> list(PermissionsQueryReq permissionsQueryReq) {
+        PageInfo<PermissionDo> permissionDoPageInfo = permissionService.queryList(permissionsQueryReq);
+        List<PermissionDo> list = permissionDoPageInfo.getList();
+        ArrayList<PermissionVo> permissionVos = new ArrayList<PermissionVo>();
+        for (PermissionDo permissionDo : list) {
+            PermissionVo permissionVo = new PermissionVo();
+            BeanUtils.copyProperties(permissionDo, permissionVo);
+            permissionVos.add(permissionVo);
+        }
+        long total = permissionDoPageInfo.getTotal();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("list", permissionVos);
+        hashMap.put("total", total);
+        return ResponseBean.success().setData(hashMap);
+    }
 }

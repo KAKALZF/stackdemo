@@ -1,6 +1,7 @@
 package com.kuaidi100.bdindex.mapper;
 
 import com.kuaidi100.bdindex.pojo.dto.PermissionDo;
+import com.kuaidi100.bdindex.pojo.req.PermissionsQueryReq;
 import org.apache.ibatis.annotations.Param;
 
 import java.security.Permission;
@@ -22,7 +23,9 @@ public interface PermissionMapper {
 
     Integer deleteByIds(@Param("ids") List<Long> ids);
 
-    int deleteById(@Param("id")Long id);
+    int deleteById(@Param("id") Long id);
+
+    List<PermissionDo> queryList(PermissionsQueryReq permissionsQueryReq);
 
 
 }

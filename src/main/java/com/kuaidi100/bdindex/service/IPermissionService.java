@@ -1,7 +1,9 @@
 package com.kuaidi100.bdindex.service;
 
+import com.github.pagehelper.PageInfo;
 import com.kuaidi100.bdindex.pojo.dto.PermissionDo;
 import com.kuaidi100.bdindex.pojo.req.PermissionAddOrUpdateReq;
+import com.kuaidi100.bdindex.pojo.req.PermissionsQueryReq;
 
 /**
  * @author zefeng_lin
@@ -17,4 +19,6 @@ public interface IPermissionService {
     PermissionDo findByPermissionId(Long permissionId);
 
     void loadAllPermissions();
+
+    PageInfo<PermissionDo> queryList(PermissionsQueryReq permissionsQueryReq);
 }

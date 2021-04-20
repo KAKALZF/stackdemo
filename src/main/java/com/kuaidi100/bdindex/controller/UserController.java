@@ -2,6 +2,7 @@ package com.kuaidi100.bdindex.controller;
 
 import com.kuaidi100.bdindex.mapper.UserMapper;
 import com.kuaidi100.bdindex.pojo.ResponseBean;
+import com.kuaidi100.bdindex.pojo.StatusCode;
 import com.kuaidi100.bdindex.pojo.req.UserAddOrUpdateReq;
 import com.kuaidi100.bdindex.pojo.resp.UserInfoVo;
 import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
@@ -11,8 +12,11 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kuaidi100.sso.pojo.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -46,14 +50,21 @@ public class UserController {
 
 
     @GetMapping("/getInfo")
-    @PreAuthorize("hasAnyAuthority('opt|user|getInfo')")
-    @AuthPermit(authName = "opt|user|getInfo")
-    public ResponseBean getUserInfo(@CookieValue(name = "TOKEN") String token) {
-        System.out.println("=========" + token);
+    public ResponseBean getUserInfo(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        for (Cookie cookie : cookies) {
+            if ("TOKEN".equals(cookie.getName())) {
+                token = cookie.getValue();
+            }
+        }
+        if (StringUtils.isEmpty(token)) {
+            return ResponseBean.warn(StatusCode.C_10002);
+        }
         Long clientId = TokenUtils.getInst().parseToken(token);
         UserInfoVo userInfo = userService.getUserInfo(clientId);
         return ResponseBean.success().setData(userInfo);
     }
-    
+
 
 }

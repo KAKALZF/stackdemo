@@ -1,17 +1,16 @@
 package com.kuaidi100.bdindex.service.serviceimpl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.kuaidi100.bdindex.pojo.APIResponseBean;
 import com.kuaidi100.bdindex.pojo.req.AreaDataQueryReq;
 import com.kuaidi100.bdindex.pojo.req.RouteDataQueryReq;
 import com.kuaidi100.bdindex.pojo.resp.AreaDataResp;
 import com.kuaidi100.bdindex.pojo.resp.AreaDataStrVo;
-import com.kuaidi100.bdindex.pojo.resp.RouteDataStrVo;
 import com.kuaidi100.bdindex.pojo.resp.RouteDataResp;
+import com.kuaidi100.bdindex.pojo.resp.RouteDataStrVo;
 import com.kuaidi100.bdindex.sercurity.config.AuthAopCheck;
-import com.kuaidi100.bdindex.sercurity.config.AuthPermit;
 import com.kuaidi100.bdindex.util.HttpUtil;
 import com.kuaidi100.bdindex.util.JsonMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -11,7 +11,7 @@ import lombok.Data;
  * @author
  */
 @Data
-public class PermissionDo implements Serializable {
+public class PermissionDo {
     private Long id;
 
     private String name;
