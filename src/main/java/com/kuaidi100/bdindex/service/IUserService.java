@@ -11,13 +11,11 @@ import com.kuaidi100.bdindex.pojo.resp.UserInfoVo;
  */
 public interface IUserService {
 
-    void addOrUpdate(UserAddOrUpdateReq userAddOrUpdateReq);
+    void add(UserAddOrUpdateReq userAddOrUpdateReq);
 
+    void update(UserAddOrUpdateReq userAddOrUpdateReq);
 
     void delete(Long userId);
-
-    UserDo findByUserId(Long userId);
-
 
     UserInfoVo getUserInfo(Long clientId);
 

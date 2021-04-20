@@ -12,7 +12,6 @@ import java.util.Date;
  */
 @Data
 public class UserDo implements Serializable {
-    private Long id;
 
     private Long clientId;
 

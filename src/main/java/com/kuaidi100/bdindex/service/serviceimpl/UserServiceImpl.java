@@ -38,30 +38,54 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     RolePermMapper rolePermMapper;
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addOrUpdate(UserAddOrUpdateReq userAddOrUpdateReq) {
-        Long id = userAddOrUpdateReq.getId();
+    public void add(UserAddOrUpdateReq userAddOrUpdateReq) {
+        Long clientId = userAddOrUpdateReq.getClientId();
+        UserDo byClientId = userMapper.findByClientId(clientId);
+        if (Objects.nonNull(byClientId)) {
+            throw new BusinessException("用户已存在");
+        }
         List<Long> roleIds = userAddOrUpdateReq.getRoleIds();
         UserDo userDo = new UserDo();
         BeanUtils.copyProperties(userAddOrUpdateReq, userDo);
-        userDo.setUpdateTime(new Date());
-        BeanUtils.copyProperties(userAddOrUpdateReq, userDo);
-        if (Objects.nonNull(id) && id > 0) {
-            userMapper.update(userDo);
-        } else {
-            userDo.setCreateTime(new Date());
-            id = userMapper.add(userDo);
-        }
+        userDo.setCreateTime(new Date());
+        userMapper.add(userDo);
         if (!CollectionUtils.isEmpty(roleIds)) {
-            Long userId = userDo.getId();
-            //删除原来的,新增新的
-            userRoleMapper.deleteByUserId(id);
             ArrayList<UserRoleDo> userRoleDos = new ArrayList<UserRoleDo>();
             for (Long roleId : roleIds) {
                 UserRoleDo userRoleDo = new UserRoleDo();
                 userRoleDo.setRoleId(roleId);
-                userRoleDo.setUserId(userId);
+                userRoleDo.setUserId(clientId);
+                userRoleDo.setCreateTime(new Date());
+                userRoleDos.add(userRoleDo);
+            }
+            userRoleMapper.batchInsert(userRoleDos);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(UserAddOrUpdateReq userAddOrUpdateReq) {
+        Long clientId = userAddOrUpdateReq.getClientId();
+        UserDo byClientId = userMapper.findByClientId(clientId);
+        if (Objects.isNull(byClientId)) {
+            throw new BusinessException("用户不存在");
+        }
+        List<Long> roleIds = userAddOrUpdateReq.getRoleIds();
+        UserDo userDo = new UserDo();
+        BeanUtils.copyProperties(userAddOrUpdateReq, userDo);
+        userDo.setUpdateTime(new Date());
+        userMapper.update(userDo);
+        if (!CollectionUtils.isEmpty(roleIds)) {
+            //删除原来的,新增新的
+            userRoleMapper.deleteByUserId(clientId);
+            ArrayList<UserRoleDo> userRoleDos = new ArrayList<UserRoleDo>();
+            for (Long roleId : roleIds) {
+                UserRoleDo userRoleDo = new UserRoleDo();
+                userRoleDo.setRoleId(roleId);
+                userRoleDo.setUserId(clientId);
                 userRoleDo.setCreateTime(new Date());
                 userRoleDos.add(userRoleDo);
             }
@@ -71,13 +95,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void delete(Long userId) {
-        userMapper.deleteById(userId);
-    }
-
-    @Override
-    public UserDo findByUserId(Long userId) {
-        UserDo userDo = userMapper.findById(userId);
-        return userDo;
+        userMapper.deleteByClientId(userId);
     }
 
     @Override
@@ -91,17 +109,13 @@ public class UserServiceImpl implements IUserService {
         if (Objects.isNull(userDo)) {
             throw new AuthenticationCredentialsNotFoundException("用户不存在");
         }
-        Long userDoId = userDo.getId();
-        List<UserRoleDo> userRoles = userRoleMapper.findAllByUserId(userDoId);
+        List<UserRoleDo> userRoles = userRoleMapper.findAllByUserId(clientId);
         if (CollectionUtils.isEmpty(userRoles)) {
             return userInfoVo;
         }
         ArrayList<Long> roleIds = new ArrayList<>();
         for (UserRoleDo userRole : userRoles) {
             roleIds.add(userRole.getRoleId());
-//            UserInfoResp.RoleInfo roleInfo = new UserInfoResp.RoleInfo();
-//            roleInfo.setName();
-//            roleInfos.add(roleInfo);
         }
         List<RoleDo> roleDos = roleMapper.findByIds(roleIds);
         for (RoleDo roleDo : roleDos) {
@@ -129,6 +143,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createAdminUser() {
+        //泽锋的ssoid
         Long clientId = 178812931L;
         UserDo user = userMapper.findByClientId(clientId);
         if (Objects.isNull(user)) {
@@ -140,7 +155,6 @@ public class UserServiceImpl implements IUserService {
             userDo.setCreateTime(new Date());
             userDo.setUsername("");
             userMapper.add(userDo);
-            Long userId = userDo.getId();
             //新增一个角色
             RoleDo admin = roleMapper.findByName("ADMIN");
             Long roleId = 0L;
@@ -158,7 +172,7 @@ public class UserServiceImpl implements IUserService {
             UserRoleDo userRoleDo = new UserRoleDo();
             userRoleDo.setCreateTime(new Date());
             userRoleDo.setRoleId(roleId);
-            userRoleDo.setUserId(userId);
+            userRoleDo.setUserId(clientId);
             userRoleMapper.insertSelective(userRoleDo);
         }
 

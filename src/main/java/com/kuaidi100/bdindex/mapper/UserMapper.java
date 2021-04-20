@@ -9,12 +9,8 @@ public interface UserMapper {
 
     int update(UserDo record);
 
-    int deleteById(Long userId);
-
-    UserDo findById(@Param("userId") Long userId);
+    int deleteByClientId(Long clientId);
 
     UserDo findByClientId(@Param("clientId") Long clientId);
-
-
 
 }

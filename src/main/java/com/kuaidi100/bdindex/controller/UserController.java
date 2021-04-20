@@ -36,7 +36,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('opt|user|add')")
     @AuthPermit(authName = "opt|user|add", zhName = "用户|新增")
     public ResponseBean add(@RequestBody UserAddOrUpdateReq userAddOrUpdateReq) {
-        userService.addOrUpdate(userAddOrUpdateReq);
+        userService.add(userAddOrUpdateReq);
         return ResponseBean.success();
     }
 
@@ -44,7 +44,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('opt|user|update')")
     @AuthPermit(authName = "opt|user|update", zhName = "用户|更新")
     public ResponseBean update(@RequestBody UserAddOrUpdateReq userAddOrUpdateReq) {
-        userService.addOrUpdate(userAddOrUpdateReq);
+        userService.update(userAddOrUpdateReq);
         return ResponseBean.success();
     }
 

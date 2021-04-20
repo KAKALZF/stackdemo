@@ -59,7 +59,7 @@
         select
         <include refid="Base_Column_List"/>
         from T_BDZS_USER_ROLE
-        where FUSER_ID=#{userId,jdbcType=DECIMAL}
+        where FUSER_ID=#{userId}
     </select>
 
 </mapper>

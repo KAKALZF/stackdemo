@@ -11,8 +11,14 @@ import java.util.List;
  */
 @Data
 public class UserAddOrUpdateReq {
-    private Long id;
+    /**
+     * 用户名
+     */
     private String username;
+
+    /**
+     * clientId
+     */
     private Long clientId;
     /**
      * 角色id集合
